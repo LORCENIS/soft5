@@ -4,9 +4,6 @@ set (CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set (CMAKE_INCLUDE_CURRENT_DIR ON)
 set (CMAKE_AUTOMOC ON)
 
-find_package(SWIG REQUIRED)
-include(${SWIG_USE_FILE})
-
 if(USE_PYTHON3)
   find_package(PythonInterp 3 REQUIRED)
 else()
@@ -14,6 +11,22 @@ else()
 endif()
 find_package(PythonLibs REQUIRED)
 find_package(Numpy REQUIRED)
+
+# Try to require correct version of swig depending on Python version
+if(${PYTHON_VERSION_STRING} VERSION_LESS 3.0)
+  find_package(SWIG REQUIRED 1.3.30)
+elseif(${PYTHON_VERSION_STRING} VERSION_LESS 3.2)
+  find_package(SWIG REQUIRED 1.3.37)
+elseif(${PYTHON_VERSION_STRING} VERSION_LESS 3.3)
+  find_package(SWIG REQUIRED 2.0.4)
+elseif(${PYTHON_VERSION_STRING} VERSION_LESS 3.5)
+  find_package(SWIG REQUIRED 3.0.0)
+else()
+  find_package(SWIG REQUIRED 3.0.8)
+endif()
+
+# Add macros for use with swig
+include(${SWIG_USE_FILE})
 
 include_directories(
   ${PYTHON_INCLUDE_DIRS}
