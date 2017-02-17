@@ -492,15 +492,16 @@ class BaseEntity(object):
         self.soft_internal_dimension_info = dimension_sizes
 
         self.__soft_entity__ = entity_t(
-            get_meta_name=meta['name'],
-            get_meta_version=meta['version'],
-            get_meta_namespace=meta['namespace'],
-            get_dimensions=dims,
-            get_dimension_size=self.soft_internal_dimension_size,
-            load=self.soft_internal_load,
-            store=self.soft_internal_store,
-            id=uuid,
-            user_data=self)
+            meta['name'],                       # get_meta_name
+            meta['version'],                    # get_meta_version
+            meta['namespace'],                  # get_meta_namespace
+            dims,                               # get_dimensions
+            self.soft_internal_dimension_size,  # get_dimension_size
+            self.soft_internal_store,           # store
+            self.soft_internal_load,            # load
+            uuid,                               # id
+            self,                               # user_data
+        )
 
         if driver:
             if uuid is None:
@@ -826,15 +827,15 @@ class Metadata(dict):
     def __str__(self):
         return self.json()
 
-    name = property(lambda self: self['name'])
-    version = property(lambda self: self['version'])
-    namespace = property(lambda self: self['namespace'])
-    description = property(lambda self: self['description'])
+    name = property(lambda self: asStr(self['name']))
+    version = property(lambda self: asStr(self['version']))
+    namespace = property(lambda self: asStr(self['namespace']))
+    description = property(lambda self: asStr(self['description']))
     dimensions = property(lambda self: [
-        str(d['name']) for d in self['dimensions']],
+        str(asStr(d['name'])) for d in self['dimensions']],
                           doc='List of dimension labels.')
     property_names = property(lambda self: [
-        str(p['name']) for p in self['properties']],
+            asStr(p['name']) for p in self['properties']],
                               doc='List of property names.')
 
     def json(self):
@@ -955,7 +956,7 @@ class JSONMetaDB(MetaDB):
         useful for testing."""
         if self.data:
             self.changed = True
-        self.data.clear()
+        self.data[:] = []   # clear
 
     def close(self):
         """Closes the connection to the database."""

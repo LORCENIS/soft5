@@ -34,15 +34,17 @@ def load(e, datamodel):
     d.latt = softpy.datamodel_get_double(datamodel, 'lattice_parameter')
     d.posi = softpy.datamodel_get_array_double(datamodel, 'positions')
 
-e = softpy.entity_t(get_meta_name='MyStructure',
-                    #get_meta_version='0.1.1',
-                    get_meta_version=lambda self: '0.1.1',
-                    get_meta_namespace='http://sintef.no/meta/soft',
-                    get_dimensions=['I', 'J'],
-                    get_dimension_size=[3, 4],
-                    load=load,
-                    store=store,
-                    user_data=Data())
+e = softpy.entity_t(
+    'MyStructure',                  # get_meta_name
+    lambda self: '0.1.1',           # get_meta_version
+    'http://sintef.no/meta/soft',   # get_meta_namespace
+    ['I', 'J'],                     # get_dimensions
+    [3, 4],                         # get_dimension_size
+    store,                          # store
+    load,                           # load
+    None,                           # id
+    Data(),                         # user_data
+)
 
 assert softpy.entity_get_meta_name(e) == 'MyStructure'
 assert softpy.entity_get_meta_version(e) == '0.1.1'
@@ -78,14 +80,16 @@ class Person(object):
         self.age = age
         self.distances = distances  # km walked the last n days
         self.__soft_entity__ = softpy.entity_t(
-            get_meta_name='Person',
-            get_meta_version='0.1',
-            get_meta_namespace='http://sintef.no/meta/soft',
-            get_dimensions=['ndays'],
-            get_dimension_size=[len(distances)],
-            load=self.load,
-            store=self.store,
-            id=uuid)
+            'Person',                       # get_meta_name
+            '0.1',                          # get_meta_version
+            'http://sintef.no/meta/soft',   # get_meta_namespace
+            ['ndays'],                      # get_dimensions
+            [len(distances)],               # get_dimension_size
+            self.store,                     # store
+            self.load,                      # load
+            uuid,                           # id
+            None,                           # user_data
+        )
 
     def store(self, e, datamodel):
         softpy.datamodel_append_string(datamodel, 'name', self.name)
