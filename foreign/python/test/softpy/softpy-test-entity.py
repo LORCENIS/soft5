@@ -2,21 +2,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
+import os
 import sys
 import pickle
 
 import numpy as np
 import softpy
 
-try:
-    import dill
-    HAVE_DILL = True
-except ImportError:
-    HAVE_DILL = False
-    print("You need dill in order to pickle entities")
-
 class Data(object):
     pass
+
+thisdir = os.path.dirname(__file__)
 
 
 def store(e, datamodel):
@@ -74,36 +70,9 @@ assert np.allclose(
 del e
 
 
-class Person(object):
-    def __init__(self, name='', age=0.0, distances=(), uuid=None):
-        self.name = name
-        self.age = age
-        self.distances = distances  # km walked the last n days
-        self.__soft_entity__ = softpy.entity_t(
-            'Person',                       # get_meta_name
-            '0.1',                          # get_meta_version
-            'http://sintef.no/meta/soft',   # get_meta_namespace
-            ['ndays'],                      # get_dimensions
-            [len(distances)],               # get_dimension_size
-            self.store,                     # store
-            self.load,                      # load
-            uuid,                           # id
-            None,                           # user_data
-        )
 
-    def store(self, e, datamodel):
-        softpy.datamodel_append_string(datamodel, 'name', self.name)
-        softpy.datamodel_append_int32(datamodel, 'age', self.age)
-        softpy.datamodel_append_array_double(
-            datamodel, 'distances', self.distances)
-
-    def load(self, e, datamodel):
-        self.name = softpy.datamodel_get_string(datamodel, 'name')
-        self.age = softpy.datamodel_get_int32(datamodel, 'age')
-        self.distances = softpy.datamodel_get_array_double(
-            datamodel, 'distances')
-
-person = Person('Jack', 42, [5.4, 7.6, 1.1])
+Person = softpy.load_entity(os.path.join(thisdir, 'person.json'))
+person = Person(name='Jack', age=42, skills=[5.4, 7.6, 1.1])
 
 with softpy.Storage('hdf5', 'x.h5') as s:
     s.save(person)
@@ -120,10 +89,7 @@ assert np.all(p.distances == person.distances)
 
 # Ensure that entity instances are pickleable
 # Seems not to work for py3<3.5
-if HAVE_DILL and (
-        sys.version_info.major < 3 or
-        (sys.version_info.major == 3 and sys.version_info.minor >= 5)):
-    dump = pickle.dumps(person)
-    person2 = pickle.loads(dump)
-    for k in person.__dict__:
-        assert getattr(person2, k) == getattr(person, k), k
+dump = pickle.dumps(person)
+person2 = pickle.loads(dump)
+for k in person.soft_get_property_names():
+    assert getattr(person2, k) == getattr(person, k), k

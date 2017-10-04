@@ -590,19 +590,29 @@ def entity(name, version=None, namespace=None):
     attr = dict(
         soft_metadata=meta,
         __soft_entity__=e,
-        __reduce__=lambda self: (_instantiate, (meta.get_json(indent=None), )),
+        __reduce__=lambda self: (
+            _instantiate,
+            (
+                meta.get_json(indent=None),
+                self.soft_get_id(),
+                {name: self.soft_get_dimension_size(name)
+                 for name in self.soft_get_dimensions()},
+            ),
+            {name: getattr(self, name)
+             for name in self.soft_get_property_names()},
+        ),
     )
     return type(meta.name, (BaseEntity, ), attr)
 
 # Mark the entity() factory as safe for unpickling
 entity.__safe_for_unpickling__ = True
 
-def _instantiate(s):
+def _instantiate(s, uuid, dimension_sizes):
     """A help function that helps pickle instantiating an instance of the
     entity described by `s`."""
     meta = Metadata(s)
     cls = entity(meta)
-    return cls()
+    return cls(uuid=uuid, dimension_sizes=dimension_sizes)
 
 
 def load_entity(filename):
