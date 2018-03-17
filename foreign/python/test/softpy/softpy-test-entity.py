@@ -72,7 +72,7 @@ del e
 
 
 Person = softpy.load_entity(os.path.join(thisdir, 'person.json'))
-person = Person(name='Jack', age=42, skills=[5.4, 7.6, 1.1])
+person = Person(name='Jack', age=42, skills=['swimming', 'sailing'])
 
 with softpy.Storage('hdf5', 'x.h5') as s:
     s.save(person)
@@ -84,12 +84,4 @@ with softpy.Storage('hdf5', 'x.h5') as s:
 
 assert p.name == 'Jack'
 assert p.age == 42
-assert np.all(p.distances == person.distances)
-
-
-# Ensure that entity instances are pickleable
-# Seems not to work for py3<3.5
-dump = pickle.dumps(person)
-person2 = pickle.loads(dump)
-for k in person.soft_get_property_names():
-    assert getattr(person2, k) == getattr(person, k), k
+assert np.all(p.skills == person.skills)

@@ -33,6 +33,9 @@ class TestSoftpy(unittest.TestCase):
     def test_factory(self):
         self.assertEqual(runfile('softpy-test-factory.py'), 0)
 
+    def test_pickle(self):
+        self.assertEqual(runfile('softpy-test-pickle.py'),  0)
+
     def test_collection(self):
         self.assertEqual(runfile('softpy-test-collection.py'), 0)
 
