@@ -8,18 +8,21 @@ if(GTEST_FOUND)
 
   aux_source_directory(. SRC_LIST)
   add_executable(${PROJECT_NAME} ${SRC_LIST})
-  include_directories(
+  include_directories(    
     ${porto-json_INCLUDE_DIRS}
     ${soft-storage-plugins-json_INCLUDE_DIRS}
     ${porto-codegen-entities_INCLUDE_DIRS}
+    ${softc_INCLUDE_DIRS}
     ${GTEST_INCLUDE_DIRS}
     )
 
   # TODO: Make this more elegant through using porto-json_LIBS?
   target_link_libraries(${PROJECT_NAME}
+    soft-storage-plugins-json
     porto-json
     ${soft-storage-plugins-json_LIBS}
     ${porto-codegen-entities_LIBS}
+    ${softc_LIBS}
     ${GTEST_LIBRARIES}
     )
 

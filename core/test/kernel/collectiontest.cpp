@@ -2,9 +2,9 @@
 #include <gtest/gtest.h>
 #include <soft.h>
 #include <collection.h>
+#include <storage.h>
 #include <istoragestrategy.h>
 #include <idatamodel.h>
-#include <json/jsonmodel.h>
 #include "collection_test_entity.h"
 #include <softc/softc-entity.h>
 
@@ -112,7 +112,9 @@ TEST(Collection, instanciateFromDataModel) {
   soft::Collection baking_log;
 
   soft::Collection mums_cookies;
-
+  soft::Storage storage("json", "collection-test.json");
+  auto strategy = storage.strategy();
+  auto dm = strategy->dataModel();
   // Confirm that we have been able to populate the collection.
   mums_cookies.setName("Mums best cookies!");
   mums_cookies.setVersion("1-with-some-improvements");
@@ -128,14 +130,13 @@ TEST(Collection, instanciateFromDataModel) {
   // ASSERT_EQ(1, mums_cookies.numRelations());
 
   // TODO: Can this fail?
-  soft::JSONModel dm;
-  mums_cookies.save((soft::IDataModel *)(&dm));
+  mums_cookies.save((soft::IDataModel *)(dm));
 
   // ... mum shelves her cookie activities and pursue other activities
   // while a generation passes. Until one day ...
 
   soft::Collection grandmas_cookies;
-  grandmas_cookies.load(&dm);
+  grandmas_cookies.load(dm);
 
   // Confirm that what we retrieve from the collection through the
   // data model is exactly what we sent in.
@@ -154,22 +155,22 @@ TEST(Collection, instanciateFromDataModel) {
 TEST_F(CollectionTest, saveAndLoadWithEntities) {
   soft::Collection c;
   soft::Collection e;
-
+  soft::Storage storage("json", "collectiontest.json");
+  auto strategy = storage.strategy();
+  auto dm = strategy->dataModel();
+  
   e.setName("My-sub-entity");
   e.setVersion("1.0");
   c.setName("My-collection");
   c.setVersion("2.0");
-
   c.attachEntity("sub-entity", &e);
-
-  soft::JSONModel dm;
-  c.save(&dm);
+  c.save(dm);
 
   soft::Collection e2;
   soft::Collection c2;
   c2.attachEntity("sub-entity", &e2);
 
-  c2.load(&dm);
+  c2.load(dm);
 
   ASSERT_EQ("My-collection", c2.name());
   ASSERT_EQ("2.0", c2.version());

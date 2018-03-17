@@ -1,6 +1,6 @@
 {
     "name": "effectivereactionparameters",
-    "version": "0.2",
+    "version": "0.1",
     "namespace": "eu.nanosim.parscale",
     "description": "Description of an effective reaction to be used in a continuum simulation. This function uses the reaction rate constant k (that might be calculated using a different expression) as the first argument.",
     "dimensions": 

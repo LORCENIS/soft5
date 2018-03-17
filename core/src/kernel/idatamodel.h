@@ -12,9 +12,11 @@ SOFT_BEGIN_NAMESPACE
 
 class SOFT_KERNEL_EXPORT IDataModel
 {
+protected:
+  IDataModel() = default;
+
 public:
-  IDataModel();
-  virtual ~IDataModel() = 0;
+  virtual ~IDataModel() = default;
 
   virtual IDataModel* createModel() = 0;
   virtual bool appendDimension     (const char *, StdUInt) = 0;
@@ -41,7 +43,7 @@ public:
 
   virtual bool getDimension        (const char *, StdUInt &) const = 0;
   virtual bool getVariant          (const char *, StdVariant &) const = 0;
-  virtual bool getString           (const char *, StdString &str) const = 0;
+  virtual bool getString           (const char *, StdString &) const = 0;
   virtual bool getInt8             (const char *, StdInt8 &) const = 0;
   virtual bool getUInt8            (const char *, StdUInt8 &) const = 0;
   virtual bool getInt16            (const char *, StdInt16 &) const = 0;

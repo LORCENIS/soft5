@@ -2,10 +2,14 @@
 #include <Soft>
 
 #include "chemkinreaction.hxx"
+#include "config.h"
 
 TEST (ChemkinTest, Construct)
 {
-  auto storage = new soft::Storage("external", "chemkin:/home/sintef/source/soft5/porto/examples/remarc?chem=SurfaceChemkin.inp&thermo=thermo.dat", "");
+  std::ostringstream ss;
+  ss << "chemkin:" << DATA_DIR << "?chem=SurfaceChemkin.inp&thermo=thermo.dat";
+  std::cout << DATA_DIR << std::endl;
+  auto storage = new soft::Storage("external", ss.str().c_str(), "");
   ASSERT_TRUE(nullptr != storage);
   auto collection = new soft::Collection();
   ASSERT_TRUE(nullptr != collection);

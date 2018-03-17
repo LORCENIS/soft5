@@ -13,10 +13,10 @@ if(GTEST_FOUND)
 
   if(UNIX)
     set_property(TEST ${PROJECT_NAME} PROPERTY
-      ENVIRONMENT "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH}")
+      ENVIRONMENT "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH}:${soft-storage-plugins-json_BINARY_DIR}")
   else()
     set_property(TEST ${PROJECT_NAME} PROPERTY
-      ENVIRONMENT "PATH=${PATH}:$ENV{PATH}")
+      ENVIRONMENT "PATH=${PATH};$ENV{PATH};${soft-storage-plugins-json_BINARY_DIR}")
   endif()
 
   set_property(TEST ${PROJECT_NAME} APPEND PROPERTY

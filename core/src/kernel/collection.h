@@ -41,6 +41,7 @@ public:
 		  std::string &version,
 		  std::string &ns,
 		  std::string &uuid) const;
+
   void attachEntity(std::string const &label, IEntity *entity);
 
 
@@ -56,7 +57,7 @@ public:
                    std::string const &object);
 
   std::list<std::string> findRelations(std::string const &subject,
-				       std::string const &predicate);
+				       std::string const &predicate) const;
 
   void addDimMap(std::string const &label,
                  std::string const &entityDim,

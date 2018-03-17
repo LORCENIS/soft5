@@ -80,7 +80,7 @@ IDataModel *MongoStrategy::dataModel() const
   return (IDataModel *)new BsonDataModel();
 }
 
-void MongoStrategy::store(IDataModel const *model)
+void MongoStrategy :: store(IDataModel const *model) const
 {
   bson_error_t error;
   auto bsonModel = dynamic_cast<BsonDataModel const *>(model);
@@ -112,7 +112,7 @@ void MongoStrategy::store(IDataModel const *model)
   }
 }
 
-void MongoStrategy::startRetrieve(IDataModel *model) const
+void MongoStrategy::startRetrieve(IDataModel *model)
 {
   auto bsonModel = dynamic_cast<BsonDataModel *>(model);
   auto propObj = bsonModel->propertyObject;
@@ -147,9 +147,9 @@ void MongoStrategy::startRetrieve(IDataModel *model) const
   }
 }
 
-void MongoStrategy::endRetrieve(IDataModel *model) const
+void MongoStrategy::endRetrieve(IDataModel *) const
 {
-  auto bsonModel = dynamic_cast<BsonDataModel *>(model);
+  //  auto bsonModel = dynamic_cast<BsonDataModel *>(model);
 }
 
 IStorageStrategy *MongoStrategy::create(char const *uri, char const *opts)

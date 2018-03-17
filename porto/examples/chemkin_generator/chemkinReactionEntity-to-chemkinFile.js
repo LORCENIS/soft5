@@ -68,9 +68,6 @@ __main__ = function (args) {
         var all_elements = ["Fe", "H", "C", "O"];
         var elements = [];
 
-        // TODO: Before this point we should capture the stochimetric factors before each species, to balance
-        //       the reactions properly.
-        
         unique(species).forEach(function(s) {
             all_elements.forEach(function(e) {
                 // For each unique species, loop over each element, then ...

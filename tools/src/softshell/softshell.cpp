@@ -551,9 +551,11 @@ int startRepl (soft::ScriptEngine const &e)
   }
 
   auto mainFunction = engine->globalObject().property("__main__");
-  auto argList = qScriptValueFromSequence(engine, QCoreApplication::arguments().mid(1));
-  auto args = QScriptValueList() << argList;
-  auto mainReturn = mainFunction.call (QScriptValue(), args);
-
-  return mainReturn.toInteger();
+  if (!mainFunction.isUndefined()) {
+    auto argList = qScriptValueFromSequence(engine, QCoreApplication::arguments().mid(1));
+    auto args = QScriptValueList() << argList;
+    auto mainReturn = mainFunction.call (QScriptValue(), args).toNumber();
+    return (int)mainReturn;
+  }
+  return result.toInteger();
 }

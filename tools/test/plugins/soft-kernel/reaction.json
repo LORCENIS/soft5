@@ -1,0 +1,22 @@
+{
+    "name": "simpleReaction",
+    "version": "1",
+    "namespace": "http://www.sintef.no/soft5/schema",
+    "description": "Description of a thermodynamical reaction",
+    "dimensions": [
+        {
+            "name": "nreactants",
+            "description": "Number of reactants"
+        }
+    ],
+    "properties": [
+        {
+            "name": "reactants",
+            "type": "string",
+            "dims": [
+                "nreactants"
+            ],
+            "description": "Name of each reactant species."
+        }
+    ]
+}

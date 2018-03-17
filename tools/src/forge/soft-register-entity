@@ -8,26 +8,29 @@
 __main__ = function (args)
 {
     if (args.length <= 1) {
-	   console.error("fatal error: no input files");
-	   return undefined;
-       }
-    var metaStorage = require ('soft.utils.metastore').connect(
-	{
-	    uri: 'mongodb://localhost',
-	    database: 'meta',
-	    collection: 'entities'
-	});
+           console.error("fatal error: no input files");
+           return 1;
+    }
+    var metaStorage = require ('soft.utils.metastore').connect({
+        uri: 'mongodb://localhost',
+        database: 'meta',
+        collection: 'entities'
+    });
     args.shift();
     args.forEach(function(file){
-	fs.readFile(file, function(err, data) {
-	    if (err) {
-		print ("error:", err);
-		return;
-	    }
-	    if (!metaStorage.store (data)) {
-		print ("Failed to write data");
-	    }
-	});
+        fs.readFile(file, function(err, data) {
+            if (err) {
+                console.error ("error:", err);
+                return false;
+            }
+            if (!metaStorage.store (data)) {
+                console.error ("Failed to register " + file);
+                return false;
+            }
+            return true;
+        });        
     });
-}
+    
+    return 0;
+};
 

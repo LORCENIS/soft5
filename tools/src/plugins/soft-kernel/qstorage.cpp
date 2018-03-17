@@ -15,6 +15,7 @@ QStorage :: QStorage(QString const &driver,
 QStorage ::  ~QStorage()
 {}
 
+
 void QStorage :: save (QEntity *entity)
 {
   try {
@@ -24,7 +25,6 @@ void QStorage :: save (QEntity *entity)
   } catch(const std::runtime_error& re) {
     std::cerr << "Runtime error: " << re.what() << "\n";
   }
-
 }
 
 void QStorage :: load (QEntity *entity)

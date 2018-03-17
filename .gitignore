@@ -52,3 +52,9 @@ CMakeFiles/
 
 .gdb_history
 *.swp
+
+# Python
+*.pyc
+
+# output data
+*.out

@@ -6,7 +6,7 @@ Translators can be registered as plugins and invoked transparently by
 SOFT.  For this to work, softpy search the current directory and all
 directories listed in the module `path` variable for *.pyt files.
 
-When this module is imported, the plugin search path is initialised
+When this module is imported, the translator search path is initialised
 from the environment variable SOFT_TRANSLATORS.  Like SOFTSTORAGE,
 this search path is colon-separated.
 
@@ -144,6 +144,12 @@ def register_translator(translator, inputs, outputs):
     outputs : sequence
         A sequence (name, version, namespace) tuples describing the
         entities the translator returns as output.
+
+    Note
+    ----
+    You normally don't need to call this function if you save your
+    translator in a *.pyt file saved somewhere listed in the
+    SOFT_TRANSLATORS environtment variable.
     """
     Translator._translators.append((translator, inputs, outputs))
 

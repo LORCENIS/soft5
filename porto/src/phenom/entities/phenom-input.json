@@ -1,0 +1,385 @@
+{
+    "name": "phenom-input",
+    "version": "1",
+    "namespace": "eu.nanosim.phenom",
+    "description": "Input parameters used to run the Phenom model",
+    "dimensions": [
+        {
+            "name": "Nads",
+            "description": "Number of adsorbing species."
+        },
+        {
+            "name": "Ncomp",
+            "description": "Number of gas species."
+        },
+        {
+            "name": "Ncomp_T",
+            "description": "Number of gas + solid species."
+        },
+        {
+            "name": "Nrx_g",
+            "description": "Number of reforming reactions."
+        },
+        {
+            "name": "Ncomp_s",
+            "description": "Number of het reactions."
+        }
+    ],
+    "properties": [
+        {
+            "name": "Ac",
+            "type": "double",
+            "description": "Cross sect bed area"
+        },
+        {
+            "name": "ADENT",
+            "type": "double",
+            "dims": [
+                "Nads"
+            ],
+            "description": "Enthalpy of adsorption CH4 CO H2 H2O."
+        },
+        {
+            "name": "B",
+            "type": "double",
+            "dims": [
+                "Ncomp"
+            ],
+            "description": "Viscosity coeffs CH4 CO CO2 H2 H2O N2."
+        },
+        {
+            "name": "BET_a0",
+            "type": "double",
+            "description": "Spec surface area."
+        },
+        {
+            "name": "CP",
+            "type": "double",
+            "dims": [
+                4,
+                "Ncomp"
+            ],
+            "description": "Heat capacity coeffs 4coeff x Ncomp species."
+        },
+        {
+            "name": "CP_s",
+            "type": "double",
+            "description": "Solid heat transfer coeff."
+        },
+        {
+            "name": "deltaHf",
+            "type": "double",
+            "dims": [
+                "Ncomp"
+            ],
+            "description": "Heat of formation, gas (Ncomp species)."
+        },
+        {
+            "name": "deltaHf_s",
+            "type": "double",
+            "dims": [
+                "Ncomp_T - Ncomp"
+            ],
+            "description": "Heat of form Ni NiO MgAl2O4 ((Ncomp_T-Ncomp) species)."
+        },
+        {
+            "name": "Dt",
+            "type": "double",
+            "description": "ReactorE diameter."
+        },
+        {
+            "name": "E",
+            "type": "double",
+            "dims": [
+                "Nads"
+            ],
+            "description": "Activation energies (Nads adsorption reactions)."
+        },
+        {
+            "name": "Ea_s",
+            "type": "double",
+            "dims": [
+                "Nrx_s"
+            ],
+            "description": "Act energy (Nrx_s solid rx)."
+        },
+        {
+            "name": "ENT298",
+            "type": "double",
+            "dims": [
+                "Nrx_g + 1"
+            ],
+            "description": "Reaction enthalpy 298 K ((Nrx_g+1) rx)."
+        },
+        {
+            "name": "F_sol_w",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "Flowin_w",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "Fluxin_w",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "FRACin",
+            "type": "double",
+            "dims": [
+                "Ncomp"
+            ],
+            "description": "Mass fractions gas at inlet (Ncomp species)"
+        },
+        {
+            "name": "FRACin_s",
+            "type": "double",
+            "dims": [
+                "Ncomp_T - Ncomp"
+            ],
+            "description": "Mass fract at inlet solid   ((Ncomp_T-Ncomp) species)"
+        },
+        {
+            "name": "Fw",
+            "type": "double",
+            "dims": [
+                "Ncomp"
+            ],
+            "description": "Kg/s of each species  (Ncomp)"
+        },
+        {
+            "name": "Gs0",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "Heq",
+            "type": "double",
+            "dims": [
+                "Nads"
+            ],
+            "description": "Equilibrium enthalpies (Nads rx)"
+        },
+        {
+            "name": "K_0i",
+            "type": "double",
+            "dims": [
+                "Nads"
+            ],
+            "description": "Pre-exponential factors, Nads adsorption reactions"
+        },
+        {
+            "name": "k_0j",
+            "type": "double",
+            "dims": [
+                "Nrx_g + 1"
+            ],
+            "description": "Preexp factors reforming (Nrx_g+1)"
+        },
+        {
+            "name": "k0_s",
+            "type": "double",
+            "dims": [
+                "Nrx_s"
+            ],
+            "description": "Preexp for heterogeneous kinetics (Nrx_s rx)"
+        },
+        {
+            "name": "k0_s",
+            "type": "double",
+            "dims": [
+                "Nrx_s"
+            ],
+            "description": "Preexp for heterogeneous kinetics (Nrx_s rx)"
+        },
+        {
+            "name": "Keq_j",
+            "type": "double",
+            "dims": [
+                "Nads"
+            ],
+            "description": "Equilibr constants, (Nads rx)"
+        },
+        {
+            "name": "MW",
+            "type": "double",
+            "dims": [
+                "Ncomp"
+            ],
+            "description": "Molar weights (Ncomp species)"
+        },
+        {
+            "name": "MW_O2",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "MW_s",
+            "type": "double",
+            "dims": [
+                "Ncomp_T - Ncomp"
+            ],
+            "description": "Molar weight, (Ncomp_T-Ncomp) solid species"
+        },
+        {
+            "name": "n_rx",
+            "type": "double",
+            "dims": [
+                "Nrx_s"
+            ],
+            "description": "Reaction order heterogeneous rx  (Nrx_s)"
+        },
+        {
+            "name": "Pin",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "R0_NiAl2O4",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "R0_NiO",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "rhogm",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "rhogmWin",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "RHOin",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "rhos0",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "Smu",
+            "type": "double",
+            "dims": [
+                "Ncomp"
+            ],
+            "description": "Viscosity parameter, (Ncomp) gases"
+        },
+        {
+            "name": "Stoich",
+            "type": "double",
+            "dims": [
+                "Ncomp",
+                "Nrx_g + 1"
+            ],
+            "description": "Stoichiometric coeffs (Ncomp x (Nrx_g+1) rx)"
+        },
+        {
+            "name": "Stoich_s",
+            "type": "double",
+            "dims": [
+                "Ncomp_T",
+                "Nrx_s + 1"
+            ],
+            "description": "Stoich for solids reactions (Ncomp_T x (Nrx_s+1) rx )"
+        },
+        {
+            "name": "Tin",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "Uin",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "Yin",
+            "type": "double",
+            "dims": [
+                "Ncomp"
+            ],
+            "description": "Mol fractions, Ncomp species"
+        },
+        {
+            "name": "g",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "R",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "C1",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "C2",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "A0",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "dg",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "dp",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "mug",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "rhog",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "P0",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "Ea",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "tm",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "dm",
+            "type": "double",
+            "description": ""
+        },
+        {
+            "name": "Nm",
+            "type": "double",
+            "description": ""
+        }
+    ]
+}

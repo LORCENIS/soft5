@@ -81,7 +81,7 @@ TEST_F(CollectionTest, findRelation)
 
 TEST_F (CollectionTest, store_and_load)
 {
-  auto storage = softc_storage_create("hdf5", "collection-test.h5", "");
+  auto storage = softc_storage_create("json", "collection-test.json", "");
   ASSERT_TRUE(storage != nullptr);
   softc_collection_s *coll = softc_collection_create_new();
   ASSERT_TRUE(coll != nullptr);

@@ -115,7 +115,7 @@ typedef double* soft_double_array;
 
 TEST_F(SoftC_StorageTest, writeData)
 {
-  auto storage  = softc_storage_create("hdf5", "test.h5", "");
+  auto storage  = softc_storage_create("json", "test.json", "");
   ASSERT_TRUE(storage != nullptr);
   auto strategy = softc_storage_get_storage_strategy(storage);
   ASSERT_TRUE(strategy != nullptr);
@@ -163,7 +163,7 @@ TEST_F(SoftC_StorageTest, readString)
 {
   softc_string_s message;
 
-  auto storage  = softc_storage_create("hdf5", "test.h5", NULL);
+  auto storage  = softc_storage_create("json", "test.json", NULL);
   ASSERT_TRUE(storage != nullptr);
   auto strategy = softc_storage_get_storage_strategy(storage);
   ASSERT_TRUE(strategy != nullptr);
@@ -187,7 +187,7 @@ TEST_F(SoftC_StorageTest, readInt32)
 {
   int32_t x;
 
-  auto storage  = softc_storage_create("hdf5", "test.h5", NULL);
+  auto storage  = softc_storage_create("json", "test.json", NULL);
   ASSERT_TRUE(storage != nullptr);
   auto strategy = softc_storage_get_storage_strategy(storage);
   ASSERT_TRUE(strategy != nullptr);
@@ -209,7 +209,7 @@ TEST_F(SoftC_StorageTest, readDouble)
 {
   double x;
 
-  auto storage  = softc_storage_create("hdf5", "test.h5", NULL);
+  auto storage  = softc_storage_create("json", "test.json", NULL);
   ASSERT_TRUE(storage != nullptr);
   auto strategy = softc_storage_get_storage_strategy(storage);
   ASSERT_TRUE(strategy != nullptr);
@@ -234,7 +234,7 @@ TEST_F(SoftC_StorageTest, readIntVec)
   size_t intarray_size;
   std::vector<int32_t> intvec_cmp;
 
-  auto storage  = softc_storage_create("hdf5", "test.h5", NULL);
+  auto storage  = softc_storage_create("json", "test.json", NULL);
   ASSERT_TRUE(storage != nullptr);
   auto strategy = softc_storage_get_storage_strategy(storage);
   ASSERT_TRUE(strategy != nullptr);
@@ -260,7 +260,7 @@ TEST_F(SoftC_StorageTest, doubleVec)
   size_t doublearray_size;
   std::vector<double> doublevec_cmp;
 
-  auto storage  = softc_storage_create("hdf5", "test.h5", "");
+  auto storage  = softc_storage_create("json", "test.json", "");
   ASSERT_TRUE(storage != nullptr);
   auto strategy = softc_storage_get_storage_strategy(storage);
   ASSERT_TRUE(strategy != nullptr);
@@ -287,7 +287,7 @@ TEST_F(SoftC_StorageTest, doubleVec2D)
 
   std::vector<std::vector<double> > doublevec2d_cmp;
 
-  auto storage  = softc_storage_create("hdf5", "test.h5", "");
+  auto storage  = softc_storage_create("json", "test.json", "");
   ASSERT_TRUE(storage != nullptr);
   auto strategy = softc_storage_get_storage_strategy(storage);
   ASSERT_TRUE(strategy != nullptr);
@@ -314,7 +314,7 @@ TEST_F(SoftC_StorageTest, doubleVec3D)
 
   std::vector<std::vector<std::vector<double> > > doublevec3d_cmp;
 
-  auto storage  = softc_storage_create("hdf5", "test.h5", "");
+  auto storage  = softc_storage_create("json", "test.json", "");
   ASSERT_TRUE(storage != nullptr);
   auto strategy = softc_storage_get_storage_strategy(storage);
   ASSERT_TRUE(strategy != nullptr);
@@ -337,7 +337,7 @@ TEST_F(SoftC_StorageTest, strList)
 {
   softc_string_list_s *slist = nullptr;
 
-  auto storage  = softc_storage_create("hdf5", "test.h5", "");
+  auto storage  = softc_storage_create("json", "test.json", "");
   ASSERT_TRUE(storage != nullptr);
   auto strategy = softc_storage_get_storage_strategy(storage);
   ASSERT_TRUE(strategy != nullptr);
@@ -363,7 +363,7 @@ TEST_F(SoftC_StorageTest, strList)
 
 TEST_F(SoftC_StorageTest, collectionStorage)
 {
-  auto storage  = softc_storage_create("hdf5", "coll.h5", "");
+  auto storage  = softc_storage_create("json", "coll.json", "");
   ASSERT_TRUE(storage != nullptr);
   auto collection = softc_collection_create_new();
   ASSERT_TRUE(collection != nullptr);
@@ -378,7 +378,7 @@ TEST_F(SoftC_StorageTest, collectionStorage)
 
 TEST_F(SoftC_StorageTest, collectionRetrieval)
 {
-  auto storage  = softc_storage_create("hdf5", "retrieve-test.h5", "");
+  auto storage  = softc_storage_create("json", "retrieve-test.json", "");
   ASSERT_TRUE(storage != nullptr);
   auto collection = softc_collection_create_new();
   ASSERT_TRUE(collection != nullptr);

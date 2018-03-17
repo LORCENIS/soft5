@@ -7,6 +7,7 @@
 #include <QPluginLoader>
 #include <QScopedPointer>
 #include <QTextStream>
+#include <QSettings>
 #include <QProcessEnvironment>
 #include <QDebug>
 #include <string>
@@ -16,11 +17,15 @@
 #include "storagefactory.h"
 #include "istoragestrategy.h"
 #include "istrategyplugin.h"
-//#include "defaultstrategy.h"
 
+#ifdef _WIN32
+  static const char *verbosityLevel = "HKEY_CURRENT_USER\\SINTEF\\SOFT5\\core\\verbosity-level";
+#else
+  static const char *verbosityLevel = "core/verbosity-level";
+#endif
 static const char *storagefactoryid = "ea1ae6168c404a31bcfdd59da91c1e85";
 static const char *pluginDirectory = "/plugins";
-static int verboseLevel = 1;
+
 
 SOFT_BEGIN_NAMESPACE
 
@@ -71,10 +76,8 @@ static bool registerPlugin(QString const &file)
         return true;
       }
     }
-    else {
-      if (verboseLevel > 0) {
-        QTextStream(stderr) << loader->errorString() << endl;
-      }
+    else if (qApp->property(verbosityLevel).toInt() > 0) {
+      QTextStream(stderr) << loader->errorString() << endl;
     }
   }
   return false;
@@ -131,14 +134,26 @@ static bool registerStoragePlugins()
   return isOk;
 }
 
+static void writeSettings()
+{
+  QSettings settings;
+  settings.setValue(verbosityLevel, qApp->property(verbosityLevel).toInt());
+}
+
 static QCoreApplication* app = nullptr;
 void init(int &argc, char *argv[])
 {
   if (QCoreApplication::instance() == nullptr) {
-    app = new QCoreApplication(argc, argv);
+    QCoreApplication::setOrganizationName("SINTEF");
+    QCoreApplication::setOrganizationDomain("www.sintef.no");
+    QCoreApplication::setApplicationName("SOFT5");
+    QSettings settings;    
+    app = new QCoreApplication(argc, argv);    
     auto storageFactory = new StorageFactory();
+    app->setProperty(verbosityLevel, settings.value(verbosityLevel, 0).toInt());
     app->setProperty(storagefactoryid, asQVariant(storageFactory));
     registerStoragePlugins();
+    writeSettings();
   }
 }
 

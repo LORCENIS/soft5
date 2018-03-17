@@ -17,8 +17,8 @@ public:
   virtual ~HDF5Strategy();
 
   IDataModel* dataModel() const   override;
-  void store (IDataModel const *) override;
-  void startRetrieve (IDataModel *) const;
+  void store (IDataModel const *) const override;
+  void startRetrieve (IDataModel *);
   void endRetrieve (IDataModel *) const;
 
   const char *metaType() const;

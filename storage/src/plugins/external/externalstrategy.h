@@ -17,8 +17,8 @@ public:
   virtual ~ExternalStrategy();
 
   IDataModel      *dataModel     () const override;
-  void             store         (IDataModel const *) override;
-  void             startRetrieve (IDataModel *) const override;
+  void             store         (IDataModel const *) const override;
+  void             startRetrieve (IDataModel *) override;
   void             endRetrieve   (IDataModel *) const override;
  
   const char *metaType() const override;

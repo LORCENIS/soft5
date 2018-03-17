@@ -4,8 +4,8 @@ with (configure) {
     setServerName("localhost:8080");
     setServerAdmin("admin@localhost");
     setErrorLog("error.log");
-
-    action("soft-script", "/var/www/cgi-bin/soft-cgi");
+    setDirectoryIndex("index.html");
+    action("soft-script", "/home/cfdem/proj/soft5/tools/src/web/res/www/cgi-bin/soft-cgi");
     addHandler("soft-script", ["jscript"]);    
     addType("text/html",  ["html", "htm"]);
     addType("text/plain", ["txt"]);

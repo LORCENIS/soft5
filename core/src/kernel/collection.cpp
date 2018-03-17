@@ -177,7 +177,7 @@ void Collection :: addEntity(std::string const &label,
   reverse predicates can be employed by using the prefix ^
  */
 std::list<std::string> Collection :: findRelations(std::string const &subject,
-                                                  std::string const &pred)
+                                                  std::string const &pred) const
 {
   return d->tripletStore.findTriplets(subject, pred);
 }

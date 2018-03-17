@@ -18,8 +18,8 @@ public:
   virtual ~MongoStrategy();
 
   IDataModel* dataModel() const   override;
-  void store (IDataModel const *) override;
-  void startRetrieve (IDataModel *model) const;
+  void store (IDataModel const *) const override;
+  void startRetrieve (IDataModel *model);
   void endRetrieve (IDataModel *model) const;
 
   const char *metaType() const;

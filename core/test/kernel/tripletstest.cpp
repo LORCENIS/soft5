@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <soft.h>
 #include <tripletstore.h>
+#include <algorithm>
 
 class TripletStoreTest : public ::testing::Test {
 protected:
@@ -62,4 +63,67 @@ TEST_F(TripletStoreTest, testReverseLookup) {
   std::list<std::string> s = triplets.findTriplets("sand", "^full-of");
   ASSERT_EQ(1, s.size());
   ASSERT_EQ("Dune", s.front());
+}
+
+TEST_F(TripletStoreTest, testFindAllTriplets) {
+  soft::TripletStore triplets;
+  triplets.addTriplet("Dune", "full-of", "sand");
+  triplets.addTriplet("Space", "has", "Dune");
+
+  std::list<soft::TripletStore::Triplet> ts = triplets.allTriplets();
+  
+  EXPECT_EQ(2 * 2, ts.size());
+
+  {
+    auto t1 = std::find_if(ts.begin(), ts.end(), [](const soft::TripletStore::Triplet &t) {
+      if (t.subject == "Dune" && t.predicate == "full-of" && t.object == "sand")
+        return true;
+      return false;
+    });
+
+    EXPECT_NE(ts.end(), t1);
+    EXPECT_EQ(t1->subject, "Dune");
+    EXPECT_EQ(t1->predicate, "full-of");
+    EXPECT_EQ(t1->object, "sand");
+  }
+  
+  {
+    auto t1 = std::find_if(ts.begin(), ts.end(), [](const soft::TripletStore::Triplet &t) {
+      if (t.subject == "sand" && t.predicate == "^full-of" && t.object == "Dune")
+        return true;
+      return false;
+    });
+    
+    EXPECT_NE(ts.end(), t1);
+    EXPECT_EQ(t1->subject, "sand");
+    EXPECT_EQ(t1->predicate, "^full-of");
+    EXPECT_EQ(t1->object, "Dune");
+  }
+
+  {
+    auto t1 = std::find_if(ts.begin(), ts.end(), [](const soft::TripletStore::Triplet &t) {
+      if (t.subject == "Space" && t.predicate == "has" && t.object == "Dune")
+        return true;
+      return false;
+    });
+
+    EXPECT_NE(ts.end(), t1);
+    EXPECT_EQ(t1->subject, "Space");
+    EXPECT_EQ(t1->predicate, "has");
+    EXPECT_EQ(t1->object, "Dune");
+  }
+
+  {
+    auto t1 = std::find_if(ts.begin(), ts.end(), [](const soft::TripletStore::Triplet &t) {
+      if (t.subject == "Dune" && t.predicate == "^has" && t.object == "Space")
+        return true;
+      return false;
+    });
+    
+    EXPECT_NE(ts.end(), t1);
+    EXPECT_EQ(t1->subject, "Dune");
+    EXPECT_EQ(t1->predicate, "^has");
+    EXPECT_EQ(t1->object, "Space");
+  }
+
 }

@@ -11,9 +11,23 @@
 SOFT_BEGIN_NAMESPACE
 
 #define NOT_IMPLEMENTED throw std::runtime_error("Not implemented");
+#define ILLEGAL_ARGUMENT throw std::runtime_error("Illegal argument");
 
 
 namespace {
+  static void appendDimension(IDataModel *dm, const char* key, QJsonValue const &value)
+  {
+    assert(!value.isNull());
+    dm->appendDimension(key, value.toInt());
+  }
+
+  static void getDimension(IDataModel const* dm, const char* key, QJsonValue &value)
+  {
+    soft::StdUInt v;
+    dm->getDimension(key, v);
+    value = QJsonValue((int)v);
+  }
+  
   static void appendNotImplemented(IDataModel* dm, const char* key, QJsonValue const &value)
   {
     NOT_IMPLEMENTED
@@ -385,6 +399,11 @@ GenericEntity :: GenericEntity(const IEntity *other)
 GenericEntity :: ~GenericEntity()
 {}
 
+void GenericEntity :: setId(std::string const &newId)
+{
+  IEntity::setId(newId);
+}
+
 void GenericEntity :: save(IDataModel *dataModel) const 
 {
   auto obj = d->schema;
@@ -396,6 +415,15 @@ void GenericEntity :: save(IDataModel *dataModel) const
   dataModel->setMetaName(obj.value("name").toString().toStdString());
   dataModel->setMetaVersion(obj.value("version").toString().toStdString());
   dataModel->setMetaNamespace(obj.value("namespace").toString().toStdString());
+  foreach(auto dimension, dimensions) {
+    auto obj = dimension.toObject();
+    auto dimName = obj.value("name").toString();
+    auto dimValue = d->dim.value(dimName);
+    if (!dimValue.isUndefined()) {
+      appendDimension(dataModel, qPrintable(dimName), dimValue.toInt());
+    }
+  }
+  
   foreach(auto property, properties) {
     auto obj = property.toObject();
     auto propName = obj.value("name").toString();
@@ -418,6 +446,14 @@ void GenericEntity :: load(IDataModel const *dataModel)
   auto properties = obj.value("properties").toArray();
   auto dimensions = obj.value("dimensions").toArray();  
 
+  foreach(auto dimension, dimensions) {
+    auto obj = dimension.toObject();
+    auto dimName = obj.value("name").toString();
+    QJsonValue dimValue;
+    getDimension(dataModel, qPrintable(dimName), dimValue);
+    d->dim.insert(dimName, dimValue);
+  }
+  
   foreach(auto property, properties) {
     auto obj = property.toObject();
     auto propName = obj.value("name").toString();
@@ -445,12 +481,21 @@ IEntity* GenericEntity :: create (const std::string &uuid)
 
 std::vector<std::string> GenericEntity :: dimensions() const
 {
-    NOT_IMPLEMENTED
+  std::vector<std::string> retval;
+  for (QString const key: d->dim.keys()) {
+    retval.push_back(key.toStdString());
+  }
+  return retval;
 }
 
-int GenericEntity :: getDimensionSize(std::string const &) const
+int GenericEntity :: getDimensionSize(std::string const &key) const
 {
-    NOT_IMPLEMENTED
+  QJsonValue value = d->dim.value(QString::fromStdString(key));
+  if (value.isUndefined() || value.isNull()){
+    ILLEGAL_ARGUMENT;
+  }
+
+  return value.toInt();
 }
 
 void GenericEntity :: setSchema(std::string const &json)
@@ -475,5 +520,16 @@ void GenericEntity :: setProperty(QString const &key, QVariant const &value)
 {
   d->doc.insert(key, QJsonValue::fromVariant(value));
 }
+
+QVariant GenericEntity :: dimension(QString const &key) const
+{
+  return d->dim.value(key).toVariant();
+}
+
+void GenericEntity :: setDimension(QString const &key, QVariant const &value)
+{
+  d->dim.insert(key, QJsonValue::fromVariant(value));
+}
+
 
 SOFT_END_NAMESPACE

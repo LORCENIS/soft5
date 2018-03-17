@@ -8,7 +8,7 @@ class IEntity::Private
 {
    friend class IEntity;
   Private(std::string const &id)
-    : uuid(id.c_str())
+    : uuid(QString::fromStdString(id))
   {}
 
   Private()

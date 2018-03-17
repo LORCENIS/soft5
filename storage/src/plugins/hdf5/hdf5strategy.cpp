@@ -283,7 +283,7 @@ IDataModel* HDF5Strategy :: dataModel() const
   return ret;
 }
 
-void HDF5Strategy :: store (IDataModel const *model)
+void HDF5Strategy :: store (IDataModel const *model) const
 {
   JSONModel const * jsonModel = dynamic_cast<JSONModel const*>(model);
   auto jsonObj = jsonModel->propsJson();
@@ -325,7 +325,7 @@ void HDF5Strategy :: store (IDataModel const *model)
   h5.close();
 }
 
-void HDF5Strategy :: startRetrieve (IDataModel *model) const
+void HDF5Strategy :: startRetrieve (IDataModel *model)
 {
   using std::placeholders::_1;
   using std::placeholders::_2;

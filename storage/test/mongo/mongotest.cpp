@@ -42,25 +42,6 @@ TEST_F(MongoTest, mongoclient_create)
    ASSERT_TRUE(collection != nullptr);
 }
 
-TEST_F(MongoTest, DISABLED_client_command) 
-{
-  FAIL();
-  auto cmd = new Bson("{\"count\":\"foo\"}");
-  auto cursor = client->command("test", cmd, nullptr);
-  ASSERT_TRUE (cursor != nullptr);
-  while ( (!cursor->error()) && cursor->more()) {
-    auto next = cursor->next ();
-    ASSERT_TRUE (next != nullptr);
-    auto str = next->asString();
-    std::cout << qPrintable(str);
-  }
-}
-
-TEST_F(MongoTest, DISABLED_client_commandSimple) 
-{
-   FAIL();
-}
-
 TEST_F(MongoTest, client_collection) 
 {
    auto collection = client->collection("test", "foo");
@@ -81,32 +62,6 @@ TEST_F(MongoTest, client_database)
    ASSERT_TRUE (database != nullptr);
 }
 
-TEST_F(MongoTest, DISABLED_client_databaseNames) 
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_client_gridFS) 
-{
-   auto gridfs = client->gridFS("test", "");
-   ASSERT_TRUE(gridfs != nullptr);
-}
-
-TEST_F(MongoTest, DISABLED_client_maxBsonSize) 
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_readPrefs) 
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_client_serverStatus) 
-{
-   FAIL();
-}
-
 TEST_F(MongoTest, client_uri) 
 {
    auto uri = client->uri();
@@ -117,53 +72,6 @@ TEST_F(MongoTest, client_writeConcern)
 {
    auto writeConcern = client->writeConcern();
    ASSERT_TRUE (writeConcern != nullptr);
-}
-
-TEST_F(MongoTest, DISABLED_client_setReadPrefs) 
-{   
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_client_setSslOpts) 
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_client_setWriteConcern) 
-{
-   mongo::WriteConcern writeConcern;
-   client->setWriteConcern (&writeConcern);
-   
-}
-
-TEST_F(MongoTest, DISABLED_clientpool_pop)
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_clientpool_push)
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_clientpool_tryPop)
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_collection_aggregate)
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_collection_command)
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_collection_commandSimple)
-{
-   FAIL();
 }
 
 TEST_F(MongoTest, collection_count)
@@ -187,11 +95,6 @@ TEST_F(MongoTest, collection_count)
    ASSERT_TRUE(collection->count(&query) == 3);
    collection->drop();
    ASSERT_TRUE(collection->count(&query) == 0);
-}
-
-TEST_F(MongoTest, DISABLED_collection_createBulkOperation)
-{
-   FAIL();
 }
 
 TEST_F(MongoTest, createIndex)
@@ -221,26 +124,6 @@ TEST_F(MongoTest, collection_drop)
    ASSERT_FALSE(ok);
 }
 
-TEST_F(MongoTest, DISABLED_collection_dropIndex)
-{
-   FAIL();
-}
-
-#if 0
-TEST_F(MongoTest, DISABLED_ensureIndex)
-{
-   auto database = client->database("test");
-   database->createCollection("foo");
-
-   Bson index("{\"foo\":1}");
-
-   auto collection = client->collection("test", "foo");
-   ASSERT_TRUE(collection != nullptr);
-   bool ok = collection->ensureIndex( &index );
-   ASSERT_TRUE(ok);
-}
-#endif
-
 TEST_F(MongoTest, collection_find)
 {
    auto database = client->database("test");
@@ -263,19 +146,17 @@ TEST_F(MongoTest, collection_find)
    ASSERT_TRUE (cur->more());
    
    int count = 0;
-   
-   while((!cur->error()) && cur->more())
+
+   ASSERT_TRUE(!cur->error());
+      
+   while(!cur->error() && cur->more())
    {
       auto next = cur->next();
-      if(next)
+      if (next)
          count++;
+      else break;
    }
    ASSERT_EQ(count, 2);
-}
-
-TEST_F(MongoTest, DISABLED_collection_findAndModify)
-{
-   FAIL();
 }
 
 TEST_F(MongoTest, lastError)
@@ -317,6 +198,7 @@ TEST_F(MongoTest, lastError)
       auto next = cur->next();
       if(next)
          count++;
+      else break;
    }
    ASSERT_EQ(count, 1);
    delete reply;
@@ -328,16 +210,6 @@ TEST_F(MongoTest, collection_name)
    database->createCollection("foo");
    auto collection = client->collection("test", "foo");
    ASSERT_TRUE(collection->name() == "foo");
-}
-
-TEST_F(MongoTest, DISABLED_collection_readPrefs)
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_writeConcern)
-{
-   FAIL();
 }
 
 TEST_F(MongoTest, collection_insert)
@@ -353,49 +225,7 @@ TEST_F(MongoTest, collection_insert)
    ASSERT_TRUE (ok);
 }
 
-TEST_F(MongoTest, DISABLED_collection_insertBulk)
-{
-   auto database = client->database("test");
-   database->createCollection("foo");
-
-
-   const int N = 10000;
-   QVector<Bson*> bulk(N);
-   
-   for(int i = 0; i < N; ++i)
-      bulk[i] = new Bson(QString("{\"foo\":%1}").arg(i));
-
-   auto collection = client->collection("test", "foo");
-   ASSERT_TRUE(collection != 0);
-   collection->drop();
-   bool ok = collection->insertBulk( bulk );
-   ASSERT_TRUE (ok);
-   
-   // !!! the nested queries do not work, they will be translated to simple {}
-   
-   Bson query1 = Bson("{\"foo\":{$gte:0}}");
-   ASSERT_TRUE(collection->count(&query1) == N);
-   
-   Bson query2 = Bson(QString("{\"foo\":\\{$gte:%1\\}}").arg(N));
-   auto cur = collection->find(&query2, nullptr,  N+1);
-   int count = 0;
-   while((!cur->error()) && cur->more())
-   {
-      auto next = cur->next();
-      if(next)
-         count++;
-   }
-   for(int i = 0; i < N; ++i)
-      delete bulk[i];
-   ASSERT_EQ(count, N);
-}
-
-TEST_F(MongoTest, DISABLED_collection_keysToIndexString)
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, rename)
+TEST_F(MongoTest, collection_rename)
 {
    auto database = client->database("test");
    auto collection = database->collection("foo");
@@ -415,20 +245,6 @@ TEST_F(MongoTest, collection_save)
   ASSERT_TRUE( ok );
 }
 
-TEST_F(MongoTest, DISABLED_collection_setReadPrefs)
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_collection_setWriteConcern)
-{
-   FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_collection_stats)
-{
-   FAIL();
-}
 
 TEST_F(MongoTest, collection_update)
 {
@@ -459,6 +275,8 @@ TEST_F(MongoTest, collection_update)
       auto next = cur->next();
       if(next)
          count++;
+      else
+	break;
    }
    ASSERT_EQ(count, 1);
 }
@@ -479,10 +297,6 @@ TEST_F(MongoTest, collection_validate)
    ASSERT_TRUE (ok);
 }
 
-TEST_F(MongoTest, DISABLED_cursor_clone)
-{
-  FAIL();
-}
 
 TEST_F(MongoTest, cursor_current)
 {
@@ -515,20 +329,13 @@ TEST_F(MongoTest, cursor_current)
      if(next) {
         count++;
         ASSERT_TRUE(next->asString() == curr->asString());
+     } else {
+       break;
      }
   }
   ASSERT_EQ(count, N);
 }
 
-TEST_F(MongoTest, DISABLED_cursor_error)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_cursor_getHost)
-{
-  FAIL();
-}
 
 TEST_F(MongoTest, cursor_isAlive)
 {
@@ -561,15 +368,13 @@ TEST_F(MongoTest, cursor_isAlive)
      auto next = cur->next();
      if(next)
           count++;
+     else
+       break;
   }
   ASSERT_EQ(count, N);
   ASSERT_TRUE(!cur->isAlive());
 }
 
-TEST_F(MongoTest, DISABLED_cursor_more)
-{
-  FAIL();
-}
 
 TEST_F(MongoTest, cursor_next)
 {
@@ -601,20 +406,13 @@ TEST_F(MongoTest, cursor_next)
      if(next) {
 //	ASSERT_TRUE(next->asString() == "{ \"foo\" : \"bar\" }");
 	count++;
+     } else {
+       break;
      }
   }
   ASSERT_EQ(count, N);
 }
 
-TEST_F(MongoTest, DISABLED_database_command)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_database_simple)
-{
-  FAIL();
-}
 
 TEST_F(MongoTest, database_collection)
 {
@@ -634,34 +432,6 @@ TEST_F(MongoTest, database_name)
 {
   auto database = client->database("test");
   ASSERT_TRUE( database->name() == "test" ); 
-}
-
-TEST_F(MongoTest, DISABLED_database_readPrefs)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_database_writeConcern)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_database_hasCollection)
-{
-   auto database = client->database("test");
-   database->createCollection("baz");
-   auto ok = database->hasCollection("baz");
-   ASSERT_TRUE(ok);
-}
-
-TEST_F(MongoTest, DISABLED_database_setReadPrefs)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_database_setWriteConcern)
-{
-  FAIL();
 }
 
 TEST_F(MongoTest, database_add_user)
@@ -711,63 +481,6 @@ TEST_F(MongoTest,gridFS_createFile)
    ASSERT_TRUE(gridfs_file != nullptr);
 }
 
-TEST_F(MongoTest,DISABLED_gridFS_createFileFromStream)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest,gridFS_drop)
-{
-   auto gridfs = client->gridFS("test", "testprefix");
-   ASSERT_TRUE(gridfs != nullptr);
-   bool ok = gridfs->drop();
-   ASSERT_TRUE( ok );
-}
-
-TEST_F(MongoTest, DISABLED_gridFS_find)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_gridFS_findOne)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest,DISABLED_gridFS_findOneByFilename)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest,DISABLED_gridFS_chunks)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest,DISABLED_gridFS_files)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_error)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_aliases)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_chunk_size)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_content_type)
-{
-  FAIL();
-}
 
 TEST_F(MongoTest, GridFSFile_filename)
 {
@@ -780,11 +493,6 @@ TEST_F(MongoTest, GridFSFile_filename)
    auto filename = gridfs_file->filename();
    ASSERT_TRUE( filename == "testfile" );
    delete gridfs_file;
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_length)
-{
-  FAIL();
 }
 
 TEST_F(MongoTest, GridFSFile_md5)
@@ -800,20 +508,6 @@ TEST_F(MongoTest, GridFSFile_md5)
    delete gridfs_file;
 }
 
-TEST_F(MongoTest, DISABLED_GridFSFile_metadata)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_uploadDate)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_readv)
-{
-  FAIL();
-}
 
 TEST_F(MongoTest, GridFSFile_save)
 {
@@ -826,26 +520,6 @@ TEST_F(MongoTest, GridFSFile_save)
    auto ok = gridfs_file->save();
    ASSERT_TRUE( ok );
    delete gridfs_file;
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_seek)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_setAliases)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_setContent_type)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_setFilename)
-{
-  FAIL();
 }
 
 TEST_F(MongoTest, GridFSFile_setMd5)
@@ -862,140 +536,6 @@ TEST_F(MongoTest, GridFSFile_setMd5)
    delete gridfs_file;
 }
 
-TEST_F(MongoTest, DISABLED_GridFSFile_setMetadata)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_tell)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFile_writev)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFileList_error)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_GridFSFileList_next)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_ReadPrefs_add_tag)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_ReadPrefs_copy)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_ReadPrefs_destroy)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_ReadPrefs_get_mode)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_ReadPrefs_get_tags)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_ReadPrefs_is_valid)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_ReadPrefs_setMode)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_ReadPrefs_setTags)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_bufferedNew)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_close)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_cork)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_destroy)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_flush)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_getBaseStream)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_gridfsNew)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_read)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_readv)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_tlsCheckCert)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_tlsDoHandshake)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_tlsNew)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_uncork)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_Stream_writev)
-{
-  FAIL();
-}
 
 TEST_F(MongoTest, URI_copy)
 {
@@ -1004,16 +544,6 @@ TEST_F(MongoTest, URI_copy)
 
   auto copy = uri->copy();
   ASSERT_TRUE(copy->database() == "bazinga");  
-}
-
-TEST_F(MongoTest, DISABLED_URI_authMechanism)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_URI_authSource)
-{
-  FAIL();
 }
 
 TEST_F(MongoTest, URI_database)
@@ -1051,16 +581,6 @@ TEST_F(MongoTest, URI_password)
   delete uri;
 }
 
-TEST_F(MongoTest, DISABLED_URI_readPrefs)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_URI_replicaSet)
-{
-  FAIL();
-}
-
 TEST_F(MongoTest, URI_ssl)
 {
    auto uri = new Uri("mongodb://compu1,compu2/bla?myopts=baz"); 
@@ -1089,46 +609,11 @@ TEST_F(MongoTest, URI_username)
   delete uri;
 }
 
-TEST_F(MongoTest, DISABLED_URI_writeConcern)
-{
-  FAIL();
-}
-
 TEST_F(MongoTest, URI_new)
 {
   auto uri = new Uri("mongodb://localhost/test"); 
   ASSERT_TRUE(uri != nullptr);
   delete uri;
-}
-
-TEST_F(MongoTest, DISABLED_URI_newForHostPort)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_URI_unescape)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_WriteConcern_copy)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_WriteConcern_destroy)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_WriteConcern_fsync)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_WriteConcern_journal)
-{
-  FAIL();
 }
 
 TEST_F(MongoTest, WriteConcern_w)
@@ -1141,36 +626,11 @@ TEST_F(MongoTest, WriteConcern_w)
   delete wconc;
 }
 
-TEST_F(MongoTest, DISABLED_WriteConcern_wmajority)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_WriteConcern_wtag)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_WriteConcern_wtimeout)
-{
-  FAIL();
-}
-
 TEST_F(MongoTest, WriteConcern_new)
 {
   auto wconc = new mongo::WriteConcern;
   ASSERT_TRUE(wconc != nullptr);
   delete wconc;
-}
-
-TEST_F(MongoTest, DISABLED_WriteConcern_setFsync)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_WriteConcern_setJournal)
-{
-  FAIL();
 }
 
 TEST_F(MongoTest, WriteConcern_setW)
@@ -1181,20 +641,5 @@ TEST_F(MongoTest, WriteConcern_setW)
   qint32 w = wconc->w();
   ASSERT_EQ(w, 123456);
   delete wconc;
-}
-
-TEST_F(MongoTest, DISABLED_WriteConcern_setWmajority)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_WriteConcern_setWtag)
-{
-  FAIL();
-}
-
-TEST_F(MongoTest, DISABLED_WriteConcern_setWtimeout)
-{
-  FAIL();
 }
 

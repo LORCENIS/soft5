@@ -29,15 +29,15 @@ def json_loads(s, **kw):
     return json.loads(s, **kw)
 
 def json_dumps(obj, **kw):
-    """Soft wrapper around json.load()."""
+    """Soft wrapper around json.dumps()."""
     return json.dumps(obj, cls=JSONSoftEncoder, **kw)
 
 
 def json_load(fp, **kw):
-    """Soft wrapper around json.loads()."""
+    """Soft wrapper around json.load()."""
     #return json.load(fp, object_hook=json_soft_obj_hook, **kw)
     return json.load(fp, **kw)
 
 def json_dump(obj, fp, **kw):
-    """Soft wrapper around json.load()."""
+    """Soft wrapper around json.dump()."""
     return json.dump(obj, fp, cls=JSONSoftEncoder, **kw)

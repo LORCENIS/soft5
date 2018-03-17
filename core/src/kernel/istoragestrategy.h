@@ -11,17 +11,19 @@ class IDataModel;
 class SOFT_KERNEL_EXPORT IStorageStrategy
 {
 public:
-  IStorageStrategy();
-  IStorageStrategy(char const *uri, const char *options = nullptr);
+  IStorageStrategy(char const *, const char *) {};
   IStorageStrategy (IStorageStrategy const &) =delete;
   IStorageStrategy &operator=(IStorageStrategy const &) =delete;
-  virtual ~IStorageStrategy() = 0;
+  virtual ~IStorageStrategy() = default;
 
   virtual const char *metaType() const                    = 0;
   virtual IDataModel *dataModel () const                  = 0;
-  virtual void        store     (IDataModel const *)      = 0;
-  virtual void        startRetrieve (IDataModel *m) const = 0;
-  virtual void        endRetrieve (IDataModel*)     const = 0;
+  virtual void        store     (IDataModel const *) const= 0;
+  virtual void        startRetrieve (IDataModel *model)   = 0;
+  virtual void        endRetrieve (IDataModel*) const {};
+
+protected:
+  IStorageStrategy() = default;
 };
 
 SOFT_END_NAMESPACE

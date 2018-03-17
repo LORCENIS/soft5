@@ -16,7 +16,8 @@ public:
   QEntity(soft::IEntity*, QObject *parent = nullptr);
   virtual ~QEntity() = 0; 
   
-  virtual QString id() const;  
+  virtual QString id() const;
+  virtual void setId(QString const &);
   virtual QString metaName() const;
   virtual QString metaNamespace() const;
   virtual QString metaVersion() const;

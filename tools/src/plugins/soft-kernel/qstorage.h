@@ -18,7 +18,7 @@ public:
 public slots:
   void save (QEntity *entity);
   void load (QEntity *entity);
-
+  
 private:
   QScopedPointer<soft::Storage> storage;
 };

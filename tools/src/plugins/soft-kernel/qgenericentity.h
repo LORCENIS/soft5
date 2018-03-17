@@ -24,9 +24,12 @@ public slots:
   QString metaVersion() const;
 
   void setSchema(QString const&);
+  void setId(QString const&);
   void debug() const;
   QVariant property(QString const&) const;
   void setProperty(QString const&, QVariant const&);
+  QVariant dimension(QString const&) const;
+  void setDimension(QString const&, QVariant const&);
 };
 
 #endif // QGENERIC_H_DEF

@@ -1,9 +1,9 @@
 ! CHEMKIN II file produced by REMARC for T =  600.00 - 5000.00 K and P =   0.50 atm
 ! Rate constant units are: s, cm, molecules, kJ/mole
-   ELEMENTS H C FE O 
+   ELEMENTS C H FE O 
    END
    SPECIES
-   H    CH3    CH4 
+   CH4    H    CH3 
    END
 
    REACTIONS  KJOULES/MOLE  MOLECULES

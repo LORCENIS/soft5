@@ -109,7 +109,7 @@ std::list<std::string> TripletStore :: findTriplets(const std::string &subj_, co
 {
   auto const subj = QString::fromStdString(subj_);
   auto const pred = QString::fromStdString(pred_);
-  std::list<std::string>retval;
+  std::list<std::string> retval;
 
   auto i = d->triplets.find(subj);
   while (i != d->triplets.cend() && i.key() == subj) {
@@ -120,6 +120,25 @@ std::list<std::string> TripletStore :: findTriplets(const std::string &subj_, co
   }
   return retval;
 }
+
+/*!
+  Return all triplets
+ */
+std::list<TripletStore::Triplet> TripletStore::allTriplets() const 
+{
+  std::list<TripletStore::Triplet> ret;
+
+  for (auto t = d->triplets.begin(); t != d->triplets.end(); ++t) {
+    ret.push_back(TripletStore::Triplet{
+      t.key().toStdString(), // Subject
+      t.value().first.toStdString(), // Predicate
+      t.value().second.toStdString() // Object
+    });
+  }
+
+  return ret;
+}
+
 
 /*!
   return all triples as a RDF-style formatted string (XML)

@@ -1,29 +1,26 @@
 project(tools-plugins-softkernel-test CXX)
-find_package (GTest)
-if (GTEST_FOUND)
 
-  aux_source_directory(. SRC_LIST)
-  add_executable(${PROJECT_NAME} ${SRC_LIST})
-  include_directories(
-    ${soft-tools-plugins-softkernel_INCLUDE_DIRS} 
-    ${GTEST_INCLUDE_DIRS}
-    )
-  target_link_libraries(${PROJECT_NAME}
-    ${soft-tools-plugins-softkernel_LIBS}
-    ${GTEST_LIBRARIES})
-    target_compile_features(${PROJECT_NAME} PUBLIC cxx_constexpr)
+add_test(NAME prepare_${PROJECT_NAME}
+  COMMAND ${softshell_BINARY_DIR}/softshell ${forge_SOURCE_DIR}/soft-register-entity ${CMAKE_CURRENT_SOURCE_DIR}/reaction.json)
 
-  add_test(${PROJECT_NAME}
-    ${RUNNER} ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
+set_property(TEST prepare_${PROJECT_NAME} PROPERTY
+  ENVIRONMENT "LD_LIBRARY_PATH=${soft-kernel_BINARY_DIR}:${soft-tools-plugins-softkernel_BINARY_DIR}:${soft-storage-mongo_BINARY_DIR}:${soft-tools-plugins-mongo_BINARY_DIR}:${soft-storage-plugins-json_BINARY_DIR}:$ENV{LD_LIBRARY_PATH}"
+  ENVIRONMENT "SOFTSTORAGE=${soft-storage-mongo_BINARY_DIR}"
+  )
 
-  if(UNIX)
-    set_property(TEST ${PROJECT_NAME} PROPERTY
-      ENVIRONMENT "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH} ${soft-tools-plugins-softkernel_BINARY_DIR}")
-  else()
-    set_property(TEST ${PROJECT_NAME} PROPERTY
-      ENVIRONMENT "PATH=${PATH}:$ENV{PATH}")
-  endif()
+# Register entity in the metadata database
+add_test(NAME ${PROJECT_NAME}
+  COMMAND ${softshell_BINARY_DIR}/softshell ${CMAKE_CURRENT_SOURCE_DIR}/soft-kernel-test.js
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
-else(GTEST_FOUND)
-  message("Google test not found - skipping tests")
-endif(GTEST_FOUND)
+if(UNIX)
+  set_property(TEST ${PROJECT_NAME} PROPERTY
+    ENVIRONMENT "LD_LIBRARY_PATH=${soft-kernel_BINARY_DIR}:${soft-tools-plugins-softkernel_BINARY_DIR}:${soft-storage-mongo_BINARY_DIR}:${soft-tools-plugins-mongo_BINARY_DIR}:${soft-storage-plugins-json_BINARY_DIR}:$ENV{LD_LIBRARY_PATH}"
+    ENVIRONMENT "SOFT_MODULES=${softshell_SOURCE_DIR}/modules"
+    ENVIRONMENT "SOFTSTORAGE=${soft-storage-mongo_BINARY_DIR}")
+else()
+  set_property(TEST ${PROJECT_NAME} PROPERTY
+    ENVIRONMENT "PATH=${PATH};${soft-kernel_BINARY_DIR};${soft-tools-plugins-softkernel_BINARY_DIR};${soft-storage-plugins-json_BINARY_DIR};$ENV{PATH}"
+    ENVIRONMENT "SOFT_MODULES=${softshell_SOURCE_DIR}/modules"
+    ENVIRONMENT "SOFTSTORAGE=${soft-storage-mongo_BINARY_DIR}")
+endif()

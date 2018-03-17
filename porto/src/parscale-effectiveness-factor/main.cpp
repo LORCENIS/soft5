@@ -180,10 +180,12 @@ int main(int argc, char **argv)
 
    // --------------------------
    soft::Collection collection(uuid);
+   soft::Storage storage("mongo2", "mongodb://localhost", "db=porto;coll=demo");
+   storage.load(&collection);
+
    collection.attachEntity("Effectivenessfactor", &ef_e);
    collection.attachEntity("Effectivereactionparameters", &erp_e);
 
-   soft::Storage storage("mongo2", "mongodb://localhost", "db=porto;coll=demo");
    storage.save(&collection);
 
    return 0;

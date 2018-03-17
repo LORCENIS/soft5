@@ -1,5 +1,8 @@
-#pragma once
+#ifndef TESTENTITY_H_DEF
+#define TESTENTITY_H_DEF
 
+
+#include <string>
 #include <vector>
 #include <ientity.h>
 
@@ -11,7 +14,8 @@ public:
   
 public:
   TestEntity();
-  virtual ~TestEntity();
+  explicit TestEntity(std::string const &uuid);
+  virtual ~TestEntity() = default;
 
   void save(soft::IDataModel *) const override;
   void load(soft::IDataModel const *) override;
@@ -22,3 +26,5 @@ public:
   std::vector<double> vec;
   std::string text;
 };
+
+#endif // TESTENTITY_H_DEF

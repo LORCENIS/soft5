@@ -22,6 +22,14 @@ public:
   std::list<std::string> findTriplets(const std::string &subj,
               const std::string &pred = std::string()) const;
 
+  struct Triplet {
+    const std::string subject;
+    const std::string predicate;
+    const std::string object;
+  };
+
+  std::list<TripletStore::Triplet> allTriplets() const;
+
   int size() const;
   std::string toRdf() const;
 

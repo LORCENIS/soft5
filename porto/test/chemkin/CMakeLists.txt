@@ -2,6 +2,7 @@ project(porto-chemkin-test CXX)
 
 find_package(GTest)
 
+configure_file("config.h.in" "config.h")
 if(GTEST_FOUND)
 
   set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -23,14 +24,14 @@ if(GTEST_FOUND)
   target_compile_features(${PROJECT_NAME} PUBLIC cxx_constexpr)
 
   add_test(${PROJECT_NAME}
-    ${RUNNER} ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME})
+    ${RUNNER} ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME} "${soft-storage-plugins-external_BINARY_DIR}")
 
   if(UNIX)
     set_property(TEST ${PROJECT_NAME} PROPERTY
-      ENVIRONMENT "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH} ${porto-entities_BINARY_DIR}")
+      ENVIRONMENT "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH}:${porto-chemkinreader_BINARY_DIR}:${soft-storage-plugins-external_BINARY_DIR}:${porto-entities_BINARY_DIR}")
   else()
     set_property(TEST ${PROJECT_NAME} PROPERTY
-      ENVIRONMENT "PATH=${PATH}:$ENV{PATH}")
+      ENVIRONMENT "PATH=${PATH};$ENV{PATH};${porto-entities_BINARY_DIR}")
   endif()
 
   set_property(TEST ${PROJECT_NAME} APPEND PROPERTY

@@ -17,6 +17,11 @@ QString QEntity :: id() const
   return QString::fromStdString(entity->id());
 }
 
+void QEntity :: setId(QString const &newId)
+{
+  entity->setId(newId.toStdString());
+}
+
 QString QEntity :: metaName() const
 {
   return QString::fromStdString(entity->metaName());

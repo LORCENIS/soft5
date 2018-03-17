@@ -96,7 +96,10 @@ ExternalStrategy :: ExternalStrategy(const char *uri, const char *options)
   auto scheme = url.scheme();
   auto s = Singleton::get();
   if (!s.libraryMap.contains(scheme)) {
-    throw std::runtime_error("External Storage Strategy cannot load scheme plugin");
+    QString errormsg = QString("External Storage Strategy cannot load scheme plugin: %1 (%2)")
+      .arg(scheme)
+      .arg(uri);
+    throw std::runtime_error(errormsg.toStdString());
   }
   d = new ExternalStrategy::Private(uri, options);
   d->extPlugin = s.libraryMap[scheme];
@@ -113,7 +116,7 @@ IDataModel *ExternalStrategy::dataModel () const
   return ret;
 }
 
-void ExternalStrategy::store (IDataModel const *model)
+void ExternalStrategy::store (IDataModel const *model) const
 {
   typedef int(*SavePrototype)(const struct _softc_datamodel_t*, const char*, const char*);
   ExternalModel const* extModel = dynamic_cast<ExternalModel const*>(model);
@@ -127,7 +130,7 @@ void ExternalStrategy::store (IDataModel const *model)
 void ExternalStrategy::endRetrieve (IDataModel *model) const
 {}
 
-void ExternalStrategy::startRetrieve (IDataModel *model) const
+void ExternalStrategy::startRetrieve (IDataModel *model)
 {
   typedef int(*LoadPrototype)(struct _softc_datamodel_t*, const char*, const char*);
   ExternalModel *extModel = dynamic_cast<ExternalModel*>(model);

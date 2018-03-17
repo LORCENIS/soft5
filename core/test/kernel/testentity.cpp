@@ -8,9 +8,10 @@ TestEntity :: TestEntity()
   : IEntity()
 {}
 
-
-TestEntity :: ~TestEntity()
-{}
+TestEntity :: TestEntity(std::string const &uuid)
+  : IEntity(uuid)
+{
+}
 
 IEntity* create (const std::string &)
 {

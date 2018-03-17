@@ -10,7 +10,7 @@
 
 SOFT_BEGIN_NAMESPACE
 
-#define NOT_IMPLEMENTED throw std::runtime_error("Not implemented");
+#define NOT_IMPLEMENTED throw std::runtime_error("Not implemented")
 
 struct BsonDataModel :: Private
 {  
