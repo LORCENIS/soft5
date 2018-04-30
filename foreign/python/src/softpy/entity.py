@@ -213,11 +213,8 @@ class BaseEntity(with_metaclass(MetaEntity)):
 
         if uninitialize and not driver:
             for name in propnames:
-                if not hasattr(self, name):
-                    try:
-                        self.soft_set_property(name, Uninitialized)
-                    except SettingDerivedPropertyError:
-                        pass
+                if not hasattr(self, name) and not hasattr(self, 'set_' + name):
+                    self.soft_set_property(name, Uninitialized)
 
     #def __repr__(self):
     #    return '%s(%s)' % (self.soft_get_meta_name(), self.soft_to_json())
@@ -276,6 +273,8 @@ class BaseEntity(with_metaclass(MetaEntity)):
         inconsistencies."""
         for d in self.soft_metadata['properties']:
             name = asStr(d['name'])
+            if not hasattr(self, name):  # not yet initialized...
+                continue
             value = getattr(self, name)
             if value is not Uninitialized and 'dims' in d:
                 for label in d['dims']:
@@ -360,7 +359,8 @@ class BaseEntity(with_metaclass(MetaEntity)):
     def soft_initialized(self):
         """Returns true if all properties are initialized. False is returned
         otherwise."""
-        return all(self.soft_get_property(name) is not Uninitialized
+        return all(hasattr(self, name) and
+                   self.soft_get_property(name) is not Uninitialized
                    for name in self.soft_get_property_names())
 
     def soft_get_property(self, name):
@@ -373,6 +373,8 @@ class BaseEntity(with_metaclass(MetaEntity)):
             return getattr(self, getter)()
         elif hasattr(self, name):
             return getattr(self, name)
+        elif name in self.get_property_names():
+            raise SoftUninitializedError(name)
         else:
             raise SoftInvalidPropertyError(name)
 
