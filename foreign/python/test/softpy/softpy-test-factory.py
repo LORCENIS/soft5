@@ -113,9 +113,3 @@ s4 = Structure3(uuid=s.soft_get_id(), driver='hdf5',
 
 Person = softpy.load_entity(os.path.join(thisdir, 'person.json'))
 jack = Person(name='Jack Daniels', age=42, skills=['tasting', 'Python', 'C'])
-
-
-import pickle
-import dill
-ss = pickle.dumps(jack)
-jack2 = pickle.loads(ss)
