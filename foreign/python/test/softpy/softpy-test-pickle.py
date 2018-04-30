@@ -6,7 +6,7 @@ import os
 import sys
 import pickle
 
-# dill is required for pickling for Python2
+# dill is required for pickling python2
 if sys.version_info.major < 3:
     import dill
 
