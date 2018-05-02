@@ -7,7 +7,7 @@ set (SOFT_MINOR_VERSION 1)
 set (SOFT_PATCH_VERSION 5)
 
 # Additional helper files for aiding debugging with VS Code.
-# NOTE: The OPTIONAL flag makes it so that it is not an error if CMake can't 
+# NOTE: The OPTIONAL flag makes it so that it is not an error if CMake can't
 #       find the script.
 # NOTE: This must be defined before any add_library and add_executable, hence
 #       why this is at the start.
@@ -318,7 +318,7 @@ if (WITH_PLUGIN_SOFT_KERNEL)
   if (WITH_TESTS)
     # Warning, this test will not run correctly until a make-install has been issued
     # and SOFTBASE is set.
-    
+
     # add_subdirectory(tools/test/plugins/soft-kernel)
   endif (WITH_TESTS)
 endif(WITH_PLUGIN_SOFT_KERNEL)
@@ -334,7 +334,7 @@ endif(WITH_WEB)
 
 # Foreign
 if (WITH_FOREIGN_C)
-  if (WITH_TESTS)    
+  if (WITH_TESTS)
     if (WITH_STORAGE_HD5)
       add_subdirectory(foreign/c/test/softc)
       add_subdirectory(foreign/c/test/storage)
@@ -377,7 +377,7 @@ if (WITH_PORTO)
   add_subdirectory(porto/src/dft-prepare)
   add_subdirectory(porto/src/remarc-wrapper)
   add_subdirectory(porto/src/parscale-effectiveness-factor)
-  
+
  if (WITH_TESTS)
    add_subdirectory(porto/test/json)
    add_subdirectory(porto/test/chemkin)

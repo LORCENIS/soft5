@@ -553,6 +553,23 @@ class BaseEntity(with_metaclass(MetaEntity)):
         d = json_loads(s)
         self.soft_from_dict(d)
 
+    def __reduce__(self):
+        if self.__module__ == 'softpy.entity':
+            return (
+                _instantiate,
+                (
+                    self.soft_metadata.get_json(indent=None),
+                    self.soft_get_id(),
+                    {name: self.soft_get_dimension_size(name)
+                     for name in self.soft_get_dimensions()},
+                ),
+                {name: getattr(self, name)
+                 for name in self.soft_get_property_names()},
+            )
+        else:
+            return object.__reduce__(self)
+
+
 #=======================================================================
 
 
@@ -592,19 +609,28 @@ def entity(name, version=None, namespace=None):
     attr = dict(
         soft_metadata=meta,
         __soft_entity__=e,
-        __reduce__=lambda self: (_instantiate, (meta.get_json(indent=None), )),
     )
     return type(meta.name, (BaseEntity, ), attr)
 
-# Mark the entity() factory as safe for unpickling
-entity.__safe_for_unpickling__ = True
-
-def _instantiate(s):
+def _instantiate(s, uuid, dimension_sizes, cls=None):
     """A help function that helps pickle instantiating an instance of the
-    entity described by `s`."""
-    meta = Metadata(s)
-    cls = entity(meta)
-    return cls()
+    entity described by `s`.  Arguments are:
+        s (str): json dump of the Entity. Only used if `cls` is None.
+        uuid (str): the uuid
+        dimension_sizes (dict): size of each dimension
+        cls (cls, optional): class of the object to unpickle.  Must be None
+            if the class is not globally defined, which is the case for
+            dynamic soft entities created with the entity() factory.
+            However, instances of classes inheriting from dynamic soft entities
+            needs to set this.
+    """
+    if cls is None:
+        meta = Metadata(s)
+        cls = entity(meta)
+    return cls(uuid=uuid, dimension_sizes=dimension_sizes)
+
+# Mark _instantiate as safe for unpickling
+_instantiate.__safe_for_unpickling__ = True
 
 
 def load_entity(filename):
