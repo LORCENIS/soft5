@@ -16,7 +16,8 @@ from .translators import translate
 from .utils import json_loads, json_dumps, json_load, json_dump
 
 
-__all__ = ['entity', 'load_entity', 'derived_property_exception']
+__all__ = ['entity', 'load_entity', 'derived_property_exception',
+           'register_entity', 'unregister_entity']
 
 
 class SoftMissingDimensionsError(SoftError):
@@ -54,17 +55,24 @@ class Uninitialized(object):
     pass
 
 
+# Dicts mapping entity UUIDs to entity classes
+_entityDB = {}      # auto-registered, new entries overwrites old
+_entityDB_reg = {}  # manually registered
 
 class MetaEntity(type):
     """Metaclass for BaseEntity providing some functionality to entity
     classes that is not inherited by their instances."""
+    def __init__(cls, name, bases, attr):
+        super(MetaEntity, cls).__init__(name, bases, attr)
+        # Add `cls` _entityDB
+        for base in cls.mro():
+            if hasattr(base, 'soft_metadata'):
+                uuid = base.soft_metadata.get_uuid()
+                _entityDB[uuid] = cls
+                break
+
     def __str__(self):
         return json_dumps(self.soft_metadata, indent=2, sort_keys=True)
-
-    def __repr__(self):
-        return '<class %s version=%r, namespace=%r)>' % (
-            self.soft_metadata['name'], self.soft_metadata['version'],
-            self.soft_metadata['namespace'])
 
     def __len__(self):
         return len(self.soft_metadata['properties'])
@@ -74,13 +82,13 @@ class MetaEntity(type):
 
     def __hash__(self):
         # The IPython pretty-printer calls this hash method (for
-        # caching) from a object with no soft_metadata attribute while
-        # it looks for formatters. This annoying exceptions in
+        # caching) from an object with no soft_metadata attribute while
+        # it looks for formatters. This leads to annoying exceptions in
         # interactive sessions.
         # To work around, we ask for forgiveness...
         try:
             return hash(self.soft_metadata.mtype)
-        except AttributeError:  # only reached by IPython pretty-printer, I hope..
+        except AttributeError:  # only triggered by IPython, I hope...
             return id(self)
 
     name = property(lambda self: str(self.soft_metadata['name']),
@@ -151,7 +159,6 @@ class BaseEntity(with_metaclass(MetaEntity)):
         options : None | string
             Additional options passed to the driver.
         dimension_sizes : None | sequence | dict | callable
-
             By default the dimension sizes are derived from the
             property sizes (unless the subclass overrides
             soft_internal_dimension_size()).  This requires that for
@@ -368,11 +375,16 @@ class BaseEntity(with_metaclass(MetaEntity)):
         checks if there exists a method get_`name`().  If so, the the
         result of calling get_`name`() with no argument is returned.
         Otherwise the value of attribute `name` is returned."""
+        # operate directly on __dict__ to avoid calling custom __setattr__
         getter = 'get_' + name
-        if hasattr(self, getter):
-            return getattr(self, getter)()
-        elif hasattr(self, name):
+        if getter in self.__dict__:
+            return self.__dict__[getter]()
+        elif name in self.__dict__:
+            return self.__dict__[name]
+        elif hasattr(self, name):  # fallback to getattr()
             return getattr(self, name)
+        elif name in self.soft_get_property_names():
+            raise SoftUninitializedError(name)
         else:
             raise SoftInvalidPropertyError(name)
 
@@ -381,16 +393,17 @@ class BaseEntity(with_metaclass(MetaEntity)):
         if there exists a method set_`name`().  If so, set_`name`() is called
         with `value` as argument.  Otherwise the attribute `name` is set to
         `value`."""
+        # operate directly on __dict__ to avoid calling custom __setattr__
         setter = 'set_' + name
-        if hasattr(self, setter):
-            getattr(self, setter)(value)
+        if setter in self.__dict__:
+            self.__dict__[setter](value)
         else:
             ptype = self.soft_get_property_type(name)
             if   (not isinstance(value, ptype) and
                   not value is Uninitialized and
                   not ptype is str):
                 value = ptype(value)
-            setattr(self, name, value)
+            self.__dict__[name] = value
 
     def soft_get_id(self):
         """Returns entity id."""
@@ -571,6 +584,13 @@ def entity(name, version=None, namespace=None):
     `name`, `version` and `namespace`."""
     meta = Metadata(name, version, namespace)
 
+    # Check if we already have created the class
+    uuid = meta.get_uuid()
+    if uuid in _entityDB_reg:
+        return _entityDB_reg[uuid]
+    elif uuid in _entityDB:
+        return _entityDB[uuid]
+
     # Create a dummy C-level entity for the returned metadata.
     # This allows us to add this metadata to a collection.
     # The assigned UUID is generated from a MD5 hash of the metadata
@@ -596,6 +616,23 @@ def entity(name, version=None, namespace=None):
 
 # Mark the entity() factory as safe for unpickling
 entity.__safe_for_unpickling__ = True
+
+def register_entity(cls):
+    """Registers Entity (sub)class object `cls`.
+
+    This ensures that entity() will return `cls` and not any of its
+    sub- or superclasses.  You normally don't need to call this function,
+    since entity subclasses are automatically registered by the meta
+    class machenery.
+    """
+    uuid = cls.soft_metadata.get_uuid()
+    _entityDB_reg[uuid] = cls
+
+def unregister_entity(cls):
+    """Unregister entities registered with register_entity().  `cls`
+    may be given in any form accepted by Metadata."""
+    uuid = Metadata(cls).get_uid()
+    del _entityDB_reg[uuid]
 
 def _instantiate(s):
     """A help function that helps pickle instantiating an instance of the

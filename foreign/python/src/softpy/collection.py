@@ -8,6 +8,7 @@ from .errors import SoftError
 from .entity import entity
 from .storage import Storage, json_hack_load, json_hack_save
 from .metadata import find_metadata_uuid
+from .translators import translate
 from .utils import json_loads, json_dumps, json_load, json_dump
 
 
@@ -197,10 +198,11 @@ class Collection(object):
             meta = find_metadata_uuid(uuid)
             instance = entity(meta)
         else:
-            if not expected_entity:
-                expected_entity = (name, version, namespace)
-            cls = entity(expected_entity)
+            m = (name, version, namespace)
+            cls = entity(m)
             instance = cls(uuid=uuid, driver=driver, uri=uri, options=options)
+            if expected_entity and expected_entity != m:
+                instance = translate(expected_entity, instance)
         if expected_entity is None:
             self._cache[label] = instance
         return instance

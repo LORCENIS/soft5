@@ -127,10 +127,14 @@ class Storage(object):
             # target instance.
             if src_mtype == target_mtype:
                 json_hack_load(self, instance, uuid)
+                if hasattr(instance, '__init_finalize__'):
+                    instance.__init_finalize__()
             else:
                 cls = entity(src_mtype)
                 src_instance = cls()
                 json_hack_load(self, src_instance, uuid)
+                if hasattr(src_instance, '__init_finalize__'):
+                    src_instance.__init_finalize__()
                 target_instance = translate(target_mtype, [src_instance])
                 instance.soft_update(target_instance)
 
@@ -151,6 +155,8 @@ class Storage(object):
                 softpy.entity_load(e, datamodel)  # Ask instance to fill out itself
                 softpy.storage_strategy_end_retrieve(self.strategy, datamodel)
                 softpy.storage_strategy_free_datamodel(datamodel)
+                if hasattr(instance, '__init_finalize__'):
+                    instance.__init_finalize__()
 
     def close(self):
         """Closes current storage."""
