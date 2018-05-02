@@ -55,6 +55,7 @@ assert niels.age == 77
 assert niels.skills == ['physics', 'football', 'philosophy']
 assert niels.birthyear == time.gmtime().tm_year - 77  # ups, we got this wrong..
 
+
 coll = softpy.Collection()
 coll.add('niels', niels)
 
