@@ -220,11 +220,8 @@ class BaseEntity(with_metaclass(MetaEntity)):
 
         if uninitialize and not driver:
             for name in propnames:
-                if not hasattr(self, name):
-                    try:
-                        self.soft_set_property(name, Uninitialized)
-                    except SettingDerivedPropertyError:
-                        pass
+                if not hasattr(self, name) and not hasattr(self, 'set_' + name):
+                    self.soft_set_property(name, Uninitialized)
 
     #def __repr__(self):
     #    return '%s(%s)' % (self.soft_get_meta_name(), self.soft_to_json())
@@ -283,6 +280,8 @@ class BaseEntity(with_metaclass(MetaEntity)):
         inconsistencies."""
         for d in self.soft_metadata['properties']:
             name = asStr(d['name'])
+            if not hasattr(self, name):  # not yet initialized...
+                continue
             value = getattr(self, name)
             if value is not Uninitialized and 'dims' in d:
                 for label in d['dims']:
@@ -367,7 +366,8 @@ class BaseEntity(with_metaclass(MetaEntity)):
     def soft_initialized(self):
         """Returns true if all properties are initialized. False is returned
         otherwise."""
-        return all(self.soft_get_property(name) is not Uninitialized
+        return all(hasattr(self, name) and
+                   self.soft_get_property(name) is not Uninitialized
                    for name in self.soft_get_property_names())
 
     def soft_get_property(self, name):
@@ -564,6 +564,23 @@ class BaseEntity(with_metaclass(MetaEntity)):
         d = json_loads(s)
         self.soft_from_dict(d)
 
+    def __reduce__(self):
+        if self.__module__ == 'softpy.entity':
+            return (
+                _instantiate,
+                (
+                    self.soft_metadata.get_json(indent=None),
+                    self.soft_get_id(),
+                    {name: self.soft_get_dimension_size(name)
+                     for name in self.soft_get_dimensions()},
+                ),
+                {name: getattr(self, name)
+                 for name in self.soft_get_property_names()},
+            )
+        else:
+            return object.__reduce__(self)
+
+
 #=======================================================================
 
 
@@ -574,7 +591,6 @@ def _get_prop_info(cls, name, field, default=None):
             return p.get(field, default)
     raise SoftInvalidPropertyError('%s has no property named "%s"' % (
         cls.soft_metadata['name'], field))
-
 
 
 def entity(name, version=None, namespace=None):
@@ -610,12 +626,9 @@ def entity(name, version=None, namespace=None):
     attr = dict(
         soft_metadata=meta,
         __soft_entity__=e,
-        __reduce__=lambda self: (_instantiate, (meta.get_json(indent=None), )),
     )
     return type(meta.name, (BaseEntity, ), attr)
 
-# Mark the entity() factory as safe for unpickling
-entity.__safe_for_unpickling__ = True
 
 def register_entity(cls):
     """Registers Entity (sub)class object `cls`.
@@ -634,12 +647,25 @@ def unregister_entity(cls):
     uuid = Metadata(cls).get_uid()
     del _entityDB_reg[uuid]
 
-def _instantiate(s):
+def _instantiate(s, uuid, dimension_sizes, cls=None):
     """A help function that helps pickle instantiating an instance of the
-    entity described by `s`."""
-    meta = Metadata(s)
-    cls = entity(meta)
-    return cls()
+    entity described by `s`.  Arguments are:
+        s (str): json dump of the Entity. Only used if `cls` is None.
+        uuid (str): the uuid
+        dimension_sizes (dict): size of each dimension
+        cls (cls, optional): class of the object to unpickle.  Must be None
+            if the class is not globally defined, which is the case for
+            dynamic soft entities created with the entity() factory.
+            However, instances of classes inheriting from dynamic soft entities
+            needs to set this.
+    """
+    if cls is None:
+        meta = Metadata(s)
+        cls = entity(meta)
+    return cls(uuid=uuid, dimension_sizes=dimension_sizes)
+
+# Mark _instantiate as safe for unpickling
+_instantiate.__safe_for_unpickling__ = True
 
 
 def load_entity(filename):
