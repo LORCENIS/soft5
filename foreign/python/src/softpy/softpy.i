@@ -80,6 +80,8 @@ Lets say that you have a class
     ...         self.owner = owner
     ...         self.credit = 0.0
 
+
+### Custom __init__()
 with a set of additional methods for different kind of transactions.  Lets
 say that you have created 'account.json' defining ``Account`` as an entity
 with properties `owner` and `credit`.  Then, create your base class
@@ -89,8 +91,8 @@ with properties `owner` and `credit`.  Then, create your base class
 and inherit from it:
 
     >>> class Account(BaseAccount)
-    ...     def __init__(self, owner)
-    ...         super(Account, self).__init__(owner)
+    ...     def __init__(self, owner, **kw)
+    ...         super(Account, self).__init__(**kw)
     ...         self.owner = owner
     ...         self.credit = 0.0
 
@@ -101,6 +103,8 @@ and share your Account instances:
     >>> with softpy.Storage(driver='hdf5', uri='mydata.h5') as storage:
     ...     storage.save(account)
 
+
+### Custom getter's and setter's
 If you have attributes that cannot be stored as SOFT properties (e.g.
 a dict) you can add setter and getter methods that maps the attribute
 to something that can be stored by SOFT.  E.g. if the Accound class
@@ -119,6 +123,15 @@ mapping dates to amounts, you could define the methods:
 
 If your class has getters and setters with another naming convention,
 you can override softpy_get_property() and softpy_set_property().
+
+
+### __init_finalize__()
+When an instance is loaded from a storage, an empty instance is
+created first and then is populated using soft_set_property().
+This might be a problem, if you need the properties in your __init__().
+It these cases, you can define a __init_finalize__() method.
+If such a  method exists, it is called without arguments after
+all properties are set.
 
 
 Storage

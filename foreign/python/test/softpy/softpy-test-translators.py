@@ -3,9 +3,14 @@
 from __future__ import print_function
 
 import os
+import sys
+import warnings
 
 import softpy
 
+if sys.version_info.major == 3 and sys.version_info.minor < 6:
+    warnings.warn('translators require Python 2.7 or Python 3.6 or greater')
+    sys.exit()
 
 thisdir = os.path.dirname(__file__)
 
