@@ -69,7 +69,10 @@ else()
   set_source_files_properties(softpy.i PROPERTIES SWIG_FLAGS "-Wall")
 endif()
 
-swig_add_library(softpy LANGUAGE python SOURCES softpy.i)
+## swig_add_module() is depricated, and should be replaced with 
+## swig_add_library(). But swig_add_library() not yet available on sintefutv006
+#swig_add_library(softpy LANGUAGE python SOURCES softpy.i)
+swig_add_module(softpy python softpy.i)
 swig_link_libraries(softpy softc ${PYTHON_LIBRARIES})
 
 
