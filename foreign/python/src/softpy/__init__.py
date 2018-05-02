@@ -5,7 +5,7 @@ from .softpy import *
 
 from .storage import Storage
 from .collection import Collection
-from .entity import entity, load_entity
+from .entity import entity, load_entity, register_entity, unregister_entity
 from .metadata import (Metadata, register_metadb, register_jsondir,
                        find_metadata, find_metadata_uuid)
 from .translators import (Translator, register_translator, translate,

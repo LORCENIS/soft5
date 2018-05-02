@@ -36,8 +36,14 @@ class TestSoftpy(unittest.TestCase):
     def test_collection(self):
         self.assertEqual(runfile('softpy-test-collection.py'), 0)
 
+    def test_metadb(self):
+        self.assertEqual(runfile('softpy-test-collection.py'), 0)
+
     def test_translators(self):
         self.assertEqual(runfile('softpy-test-translators.py'), 0)
+
+    def test_init_finalize(self):
+        self.assertEqual(runfile('softpy-test-init_finalize.py'), 0)
 
 
 if __name__ == "__main__":

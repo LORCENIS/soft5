@@ -1,0 +1,786 @@
+{
+    "e778e585-a583-433f-ab61-9cfc98b80c52": {
+        "meta": {
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft",
+            "name": "Collection"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "efc045b6-a635-4e28-88ba-323796dabd16"
+                ]
+            ]
+        }
+    },
+    "efc045b6-a635-4e28-88ba-323796dabd16": {
+        "meta": {
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft",
+            "name": "Person"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ],
+            "age": 77,
+            "name": "Niels Bohr"
+        }
+    },
+    "11868b9d-92a5-45f4-9332-7243543ece9c": {
+        "meta": {
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft",
+            "name": "Collection"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "2b992462-de3a-4edb-8c77-1227804c60d8"
+                ]
+            ]
+        }
+    },
+    "2b992462-de3a-4edb-8c77-1227804c60d8": {
+        "meta": {
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft",
+            "name": "Person"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ],
+            "age": 77,
+            "name": "Niels Bohr"
+        }
+    },
+    "9a770dd0-475f-41b4-ad4b-c5e6d8a50c56": {
+        "meta": {
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft",
+            "name": "Person"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ],
+            "age": 77,
+            "name": "Niels Bohr"
+        }
+    },
+    "fdc2cf12-7976-4d0a-9833-856f6473fe6b": {
+        "meta": {
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft",
+            "name": "Collection"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "783f52a6-d7d8-4efd-a8da-f2e9b7e81e72"
+                ]
+            ]
+        }
+    },
+    "783f52a6-d7d8-4efd-a8da-f2e9b7e81e72": {
+        "meta": {
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft",
+            "name": "Person"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ],
+            "age": 77,
+            "name": "Niels Bohr"
+        }
+    },
+    "b6457472-83d2-4e62-8dd3-ef12d25cbd0d": {
+        "meta": {
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft",
+            "name": "Person"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ],
+            "age": 77,
+            "name": "Niels Bohr"
+        }
+    },
+    "cec5a190-138f-44a0-8524-ff9f7406b00f": {
+        "meta": {
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft",
+            "name": "Person"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ],
+            "age": 77,
+            "name": "Niels Bohr"
+        }
+    },
+    "2c032d3d-cad2-4927-b656-81e6f66c6109": {
+        "meta": {
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft",
+            "name": "Person"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ],
+            "age": 77,
+            "name": "Niels Bohr"
+        }
+    },
+    "2e613bfc-7ac6-4149-bdf9-86db440e01e5": {
+        "meta": {
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft",
+            "name": "Person"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ],
+            "age": 77,
+            "name": "Niels Bohr"
+        }
+    },
+    "3e5578e2-b44c-4c59-88ba-a120ca77d87e": {
+        "meta": {
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft",
+            "name": "Collection"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "c1a4a07b-310c-4119-acae-929f8b21a3b3"
+                ]
+            ]
+        }
+    },
+    "585eb108-77f1-41e9-b380-8ff04bf0be59": {
+        "meta": {
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft",
+            "name": "Collection"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "cec5a190-138f-44a0-8524-ff9f7406b00f"
+                ]
+            ]
+        }
+    },
+    "9016f76f-de3b-4ca9-8d9d-8e812a63e6cd": {
+        "meta": {
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft",
+            "name": "Collection"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "2e613bfc-7ac6-4149-bdf9-86db440e01e5"
+                ]
+            ]
+        }
+    },
+    "5b590d5d-9373-4933-a577-4867a8242698": {
+        "meta": {
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft",
+            "name": "Collection"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "9a770dd0-475f-41b4-ad4b-c5e6d8a50c56"
+                ]
+            ]
+        }
+    },
+    "e158f21d-c82c-4e41-afb0-c9a6a2e09a58": {
+        "meta": {
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft",
+            "name": "Collection"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "2c032d3d-cad2-4927-b656-81e6f66c6109"
+                ]
+            ]
+        }
+    },
+    "c1a4a07b-310c-4119-acae-929f8b21a3b3": {
+        "meta": {
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft",
+            "name": "Person"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ],
+            "age": 77,
+            "name": "Niels Bohr"
+        }
+    },
+    "992e6130-dafd-4127-80af-48276143d22c": {
+        "meta": {
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft",
+            "name": "Collection"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "b6457472-83d2-4e62-8dd3-ef12d25cbd0d"
+                ]
+            ]
+        }
+    },
+    "59ce08ad-a8b1-4880-87b0-66d32b925bd4": {
+        "meta": {
+            "name": "Collection",
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "30af1773-0469-46c8-816f-b93e9a3824e9"
+                ]
+            ]
+        }
+    },
+    "30af1773-0469-46c8-816f-b93e9a3824e9": {
+        "meta": {
+            "name": "Person",
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "name": "Niels Bohr",
+            "age": 77,
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ]
+        }
+    },
+    "6a268272-f71c-4111-a740-b810298c8206": {
+        "meta": {
+            "name": "Collection",
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "42ea5b33-abc9-4695-a0da-f18d6a0515e6"
+                ]
+            ]
+        }
+    },
+    "42ea5b33-abc9-4695-a0da-f18d6a0515e6": {
+        "meta": {
+            "name": "Person",
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "name": "Niels Bohr",
+            "age": 77,
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ]
+        }
+    },
+    "27502898-e6d8-4fa4-95e2-d4e2b529920f": {
+        "meta": {
+            "name": "Collection",
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "33ab5c9a-1acf-4435-8589-545f1e861fac"
+                ]
+            ]
+        }
+    },
+    "33ab5c9a-1acf-4435-8589-545f1e861fac": {
+        "meta": {
+            "name": "Person",
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "name": "Niels Bohr",
+            "age": 77,
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ]
+        }
+    },
+    "5263f416-edca-4cbf-9b89-b6363973f882": {
+        "meta": {
+            "name": "Collection",
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "ac5b2869-ca35-41f1-aa6f-54beb2cf9d4e"
+                ]
+            ]
+        }
+    },
+    "ac5b2869-ca35-41f1-aa6f-54beb2cf9d4e": {
+        "meta": {
+            "name": "Person",
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "name": "Niels Bohr",
+            "age": 77,
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ]
+        }
+    },
+    "befb0f6e-f4d6-4b58-ae6a-6d4bbe43e111": {
+        "meta": {
+            "name": "Collection",
+            "version": "1.0-RC-4",
+            "namespace": "org.sintef.soft"
+        },
+        "dimensions": {},
+        "properties": {
+            "triplets": [
+                [
+                    "niels",
+                    "name",
+                    "Person"
+                ],
+                [
+                    "niels",
+                    "version",
+                    "0.2.4"
+                ],
+                [
+                    "niels",
+                    "namespace",
+                    "http://sintef.no/meta/soft"
+                ],
+                [
+                    "niels",
+                    "is-a",
+                    "Entity"
+                ],
+                [
+                    "niels",
+                    "id",
+                    "364546bf-6bf4-46e2-908e-6edd4343abc2"
+                ]
+            ]
+        }
+    },
+    "364546bf-6bf4-46e2-908e-6edd4343abc2": {
+        "meta": {
+            "name": "Person",
+            "version": "0.2.4",
+            "namespace": "http://sintef.no/meta/soft"
+        },
+        "dimensions": {
+            "number_of_skills": 3
+        },
+        "properties": {
+            "name": "Niels Bohr",
+            "age": 77,
+            "skills": [
+                "physics",
+                "football",
+                "philosophy"
+            ]
+        }
+    }
+}

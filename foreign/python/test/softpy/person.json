@@ -22,10 +22,8 @@
         },
         {
             "name": "skills",
-            "type": "string_list",
-	    "dims": [
-		"number_of_skills"
-	    ],
+            "type": "string",
+	    "dims": ["number_of_skills"],
             "description": ""
         }
     ]
