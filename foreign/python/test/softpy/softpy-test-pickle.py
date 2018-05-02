@@ -5,10 +5,15 @@ from __future__ import print_function
 import os
 import sys
 import pickle
+import warnings
 
 # dill is required for pickling python2
 if sys.version_info.major < 3:
-    import dill
+    try:
+        import dill
+    except ImportError:
+        warnings.warn('dill is required for pickling in python2')
+        sys.exit()
 
 import softpy
 
